@@ -5,10 +5,13 @@
     </form>
   <section>
     <ul *ngIf="observer | async as test">
-      <li *ngFor="let item of test.items">
-        <input type="checkbox" [checked]="item.isDone" (change)="update(item)">
-        <input type="text" [value]="item.label" (submit)="update(item)">
+      <li *ngFor="let item of test.items; trackBy: trackById">
+        <input type="checkbox" [ngModel]="item.isDone" (ngModelChange)="update({isDone:$event},item)">
+        <input type="text" [ngModel]="item.label" (ngModelChange)="update({label:$event},item)" [ngClass]="item.isDone ? 'done':'inProgress'">
         <button (click)="delete(item)">X</button>
+        <code>{{item.isDone}} </code>
+        <code>{{item.label}} </code>
+        <code>{{item.id}}</code>
       </li>
     </ul>
   </section>

@@ -27,8 +27,11 @@ export class AppComponent {
     this.todoService.delete(item);
   }
 
-  update(data: Partial<TodoItem>) {
-    this.todoService.update(data);
+  update(data: Partial<TodoItem>,...items: readonly TodoItem[]) {
+    this.todoService.update(data, ...items);
   }
 
+  trackById(number : number,item: TodoItem) {
+    return item.id;
+  }
 }
