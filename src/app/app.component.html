@@ -1,2 +1,15 @@
 <h1>TP TodoList</h1>
-
+<div>
+    <form (submit)="create(name.value);name.value=''">
+      <input type="text" #name>
+    </form>
+  <section>
+    <ul *ngIf="observer | async as test">
+      <li *ngFor="let item of test.items">
+        <input type="checkbox" [checked]="item.isDone" (change)="update(item)">
+        <input type="text" [value]="item.label" (submit)="update(item)">
+        <button (click)="delete(item)">X</button>
+      </li>
+    </ul>
+  </section>
+</div>
