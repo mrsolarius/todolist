@@ -22,6 +22,10 @@ export class TodolistService {
   readonly observable = this.subj.asObservable();
 
   constructor() {
+    let key = localStorage.getItem('todolist');
+    if (key) {
+      this.subj.next(JSON.parse(key));
+    }
   }
 
   create(...labels: readonly string[]): this {
@@ -35,6 +39,7 @@ export class TodolistService {
           )
       ]
     } );
+    this.save();
     return this;
   }
 
@@ -44,6 +49,7 @@ export class TodolistService {
       ...L,
       items: L.items.filter(item => items.indexOf(item) === -1 )
     } );
+    this.save();
     return this;
   }
 
@@ -57,7 +63,12 @@ export class TodolistService {
     } else {
       this.delete(...items);
     }
+    this.save();
     return this;
+  }
+
+  save() {
+    localStorage.setItem('todolist', JSON.stringify(this.subj.value));
   }
 
 }
