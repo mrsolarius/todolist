@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import {HostListener, Injectable} from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import {HistoryService} from "./history.service";
 
 export interface TodoItem {
   readonly label: string;
@@ -21,11 +22,12 @@ export class TodolistService {
   private subj = new BehaviorSubject<TodoList>({label: 'L3 MIAGE', items: [] });
   readonly observable = this.subj.asObservable();
 
-  constructor() {
-    let key = localStorage.getItem('todolist');
+  constructor(private history : HistoryService<TodoList>) {
+    const key = localStorage.getItem('todolist');
     if (key) {
       this.subj.next(JSON.parse(key));
     }
+    history.push(this.subj.value);
   }
 
   create(...labels: readonly string[]): this {
@@ -69,6 +71,23 @@ export class TodolistService {
 
   save() {
     localStorage.setItem('todolist', JSON.stringify(this.subj.value));
+    this.history.push(this.subj.value);
+  }
+
+  undo(){
+    const L = this.history.undo();
+    if(L!==null) {
+      this.subj.next(L)
+      this.save();
+    }
+  }
+
+  redo(){
+    const L = this.history.redo();
+    if(L!==null) {
+      this.subj.next(L)
+      this.save();
+    }
   }
 
 }
