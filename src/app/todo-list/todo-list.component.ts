@@ -55,4 +55,8 @@ export class TodoListComponent implements OnInit {
   deleteSelected(obsList:readonly TodoItem[]){
     this.todoService.delete(...obsList.filter(value => value.isDone))
   }
+
+  todoCount(obsList: readonly TodoItem[]) {
+    return obsList.filter(value => !value.isDone).length
+  }
 }

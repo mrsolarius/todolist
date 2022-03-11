@@ -16,7 +16,7 @@
     />
     <label for="toggleAll">Mark all as complete</label>
     <ul class="todo-list">
-      <li *ngFor="let item of preFilter(tdl.items); trackBy: trackById" [class.editing]="cItem.editing">
+      <li *ngFor="let item of preFilter(tdl.items); trackBy: trackById" [class.editing]="cItem.editing" [class.completed]="item.isDone">
        <app-todo-item [item]="item"
                       (delete)="delete(item)"
                       (update)="update($event,item)"
@@ -25,18 +25,24 @@
     </ul>
   </section>
   <footer class="footer">
-    <span class="todo-count"><strong>{{preFilter(tdl.items).length}}</strong> restantes</span>
+    <span class="todo-count"><strong>{{todoCount(tdl.items)}}</strong> restantes</span>
     <ul class="filters">
       <li>
-        <a class="filterAll" style="cursor: pointer" (click)="filter=statusEnum.All">Tous</a>
+        <a class="filterAll" style="cursor: pointer"
+           [class.selected]="filter==statusEnum.All"
+           (click)="filter=statusEnum.All">Tous</a>
       </li>
       <li>
-        <a class="filterActives" style="cursor: pointer" (click)="filter=statusEnum.Active">Actifs</a>
+        <a class="filterActives" style="cursor: pointer"
+           [class.selected]="filter==statusEnum.Active"
+           (click)="filter=statusEnum.Active">Actifs</a>
       </li>
       <li>
-        <a class="filterCompleted" style="cursor: pointer" (click)="filter=statusEnum.Completed">Complétés</a>
+        <a class="filterCompleted" style="cursor: pointer"
+           [class.selected]="filter==statusEnum.Completed"
+           (click)="filter=statusEnum.Completed">Complétés</a>
       </li>
     </ul>
-    <button class="clear-completed" style="cursor: pointer" (click)="deleteSelected(tdl.items)">Supprimer cochées</button>
+    <button *ngIf="todoCount(tdl.items)<tdl.items.length" class="clear-completed" style="cursor: pointer" (click)="deleteSelected(tdl.items)">Supprimer cochées</button>
   </footer>
 </section>
