@@ -1,6 +1,12 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import {TodoItem, TodolistService} from "../todolist.service";
 
+export enum FilterEnum{
+  All,
+  Active,
+  Completed
+}
+
 @Component({
   selector: 'app-todo-list',
   templateUrl: './todo-list.component.html',
@@ -8,6 +14,8 @@ import {TodoItem, TodolistService} from "../todolist.service";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TodoListComponent implements OnInit {
+  filter : FilterEnum = FilterEnum.All
+  statusEnum: typeof FilterEnum = FilterEnum;
 
   constructor(public todoService: TodolistService) { }
 
@@ -34,4 +42,17 @@ export class TodoListComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  preFilter(obsList:readonly TodoItem[]){
+    switch (this.filter){
+      case FilterEnum.Active:
+        return obsList.filter(value => !value.isDone)
+      case FilterEnum.Completed:
+        return obsList.filter(value => value.isDone)
+    }
+    return obsList;
+  }
+
+  deleteSelected(obsList:readonly TodoItem[]){
+    this.todoService.delete(...obsList.filter(value => value.isDone))
+  }
 }
