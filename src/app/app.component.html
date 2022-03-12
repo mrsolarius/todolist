@@ -1,19 +1,1 @@
-<h1>TP TodoList</h1>
-<div>
-    <form (submit)="create(name.value);name.value=''">
-      <input type="text" #name>
-    </form>
-  <section>
-    <ul *ngIf="observer | async as test">
-      <li *ngFor="let item of test.items; trackBy: trackById">
-        <input type="checkbox" [ngModel]="item.isDone" (ngModelChange)="update({isDone:$event},item)">
-        <input type="text" [ngModel]="item.label" (ngModelChange)="update({label:$event},item)" [ngClass]="item.isDone ? 'done':'inProgress'">
-        <button (click)="delete(item)">X</button>
-        <code>{{item.isDone}} </code>
-        <code>{{item.label}} </code>
-        <code>{{item.id}}</code>
-      </li>
-    </ul>
-  </section>
-</div>
 <app-todo-list></app-todo-list>

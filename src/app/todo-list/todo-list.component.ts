@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy, HostListener} from '@angular/core';
 import {TodoItem, TodolistService} from "../todolist.service";
 
 export enum FilterEnum{
@@ -18,6 +18,16 @@ export class TodoListComponent implements OnInit {
   statusEnum: typeof FilterEnum = FilterEnum;
 
   constructor(public todoService: TodolistService) { }
+
+  @HostListener('window:keyup', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+    if (event.ctrlKey && event.key === 'z'){
+      this.todoService.undo();
+    }
+    if (event.ctrlKey && event.key === 'y'){
+      this.todoService.redo();
+    }
+  }
 
   get observer() {
     return this.todoService.observable;
