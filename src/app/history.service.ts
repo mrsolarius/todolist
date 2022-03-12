@@ -1,5 +1,4 @@
-import {Inject, Injectable, InjectionToken} from '@angular/core';
-
+import { Inject, Injectable } from '@angular/core';
 
 interface History<T> {
   canUndo: boolean;
@@ -28,10 +27,13 @@ export class HistoryService<T>{
   }
 
   push(element: T) {
-    this.history.history.push(element);
-    this.history.currentIndex++;
-    this.history.canUndo = true;
-    this.history.canRedo = false;
+    if(this.history.history.filter(e => e === element).length === 0) {
+      this.history.history.push(element);
+      this.history.current = element;
+      this.history.currentIndex = this.history.history.length - 1;
+      this.history.canUndo = true;
+      this.history.canRedo = false;
+    }
   }
 
   undo() : T | null {

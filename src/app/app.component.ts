@@ -10,7 +10,7 @@ import {HistoryService} from "./history.service";
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   providers: [
-    {provide:'HISTORY_SERVICE_PROVIDER',useValue:{label: 'L3 MIAGE', items: [] }},
+    {provide:'HISTORY_SERVICE_PROVIDER',useValue:localStorage.getItem('todolist')?JSON.parse(localStorage.getItem('todolist')!):{label: 'L3 MIAGE', items: [] }},
     TodolistService,
     HistoryService
   ]
@@ -23,9 +23,11 @@ export class AppComponent {
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
     if (event.ctrlKey && event.key === 'z'){
+      console.log('ctrl+z');
       this.todoService.undo();
     }
     if (event.ctrlKey && event.key === 'y'){
+      console.log('ctrl+y');
       this.todoService.redo();
     }
   }

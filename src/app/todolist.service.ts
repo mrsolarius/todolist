@@ -1,6 +1,6 @@
-import {HostListener, Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import {HistoryService} from "./history.service";
+import { HistoryService } from "./history.service";
 
 export interface TodoItem {
   readonly label: string;
@@ -27,58 +27,59 @@ export class TodolistService {
     if (key) {
       this.subj.next(JSON.parse(key));
     }
-    history.push(this.subj.value);
+
+    // Subscribe to change for saving and history
+    this.observable.subscribe(L => {
+      localStorage.setItem('todolist', JSON.stringify(L));
+    });
   }
 
   create(...labels: readonly string[]): this {
     const L: TodoList = this.subj.value;
-    this.subj.next( {
+    const newValue : TodoList = {
       ...L,
       items: [
         ...L.items,
         ...labels.filter( l => l !== '').map(
-            label => ({label, isDone: false, id: idItem++})
-          )
+          label => ({label, isDone: false, id: idItem++})
+        )
       ]
-    } );
-    this.save();
+    }
+    this.subj.next(newValue);
+    this.history.push(newValue);
     return this;
   }
 
   delete(...items: readonly TodoItem[]): this {
     const L = this.subj.value;
-    this.subj.next( {
+    const newValue : TodoList ={
       ...L,
       items: L.items.filter(item => items.indexOf(item) === -1 )
-    } );
-    this.save();
+    }
+    this.subj.next(newValue);
+    this.history.push(newValue);
     return this;
   }
 
   update(data: Partial<TodoItem>, ...items: readonly TodoItem[]): this {
     if(data.label !== "") {
       const L = this.subj.value;
-      this.subj.next( {
+      const newValue : TodoList ={
         ...L,
         items: L.items.map( item => items.indexOf(item) >= 0 ? {...item, ...data} : item )
-      } );
+      }
+      this.subj.next(newValue);
+      this.history.push(newValue);
     } else {
       this.delete(...items);
     }
-    this.save();
     return this;
-  }
-
-  save() {
-    localStorage.setItem('todolist', JSON.stringify(this.subj.value));
-    this.history.push(this.subj.value);
   }
 
   undo(){
     const L = this.history.undo();
     if(L!==null) {
       this.subj.next(L)
-      this.save();
     }
   }
 
@@ -86,7 +87,6 @@ export class TodolistService {
     const L = this.history.redo();
     if(L!==null) {
       this.subj.next(L)
-      this.save();
     }
   }
 
