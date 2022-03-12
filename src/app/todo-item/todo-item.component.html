@@ -1,4 +1,4 @@
-<div class="view" (dblclick)="editing=true;newTextInput.focus()">
+<div class="view" (dblclick)="startEditing(newTextInput)">
   <input class="toggle"
          type="checkbox"
          name="done"
@@ -15,8 +15,8 @@
          name="newTextInput"
          class="edit"
          [ngModel]="item.label"
-         (ngModelChange)="update.emit({label:$event})"
-         (blur)="editing=false"
+         (keyup.enter)="saveEdit(newTextInput.value)"
+         (blur)="saveEdit(newTextInput.value)"
   />
 </form>
 
