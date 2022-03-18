@@ -24,7 +24,7 @@
        ></app-todo-item>
     </ul>
   </section>
-  <footer class="footer">
+  <footer class="footer" *ngIf="tdl.items.length>0">
     <span class="todo-count"><strong>{{todoCount(tdl.items)}}</strong> restantes</span>
     <ul class="filters">
       <li>
