@@ -67,7 +67,7 @@ export class TodoListComponent implements OnInit {
   }
 
   toggleAll(obsList:readonly TodoItem[]){
-    this.todoService.update({isDone: !obsList.every(value => value.isDone)}, ...obsList)
+    this.todoService.update({isDone: !this.isChecked(obsList)}, ...obsList)
   }
 
   isChecked(obsList:readonly TodoItem[]){
