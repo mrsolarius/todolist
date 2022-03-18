@@ -1,5 +1,5 @@
 import {Component, OnInit, ChangeDetectionStrategy, HostListener} from '@angular/core';
-import {TodoItem, TodolistService} from "../todolist.service";
+import {TodoItem, TodolistService} from "../../todolist.service";
 
 export enum FilterEnum{
   All,
