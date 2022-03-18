@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { HistoryService } from "./history.service";
+import { HistoryService } from "../history.service";
 
 export interface TodoItem {
   readonly label: string;

@@ -1,5 +1,5 @@
 import {Component, Injectable} from '@angular/core';
-import {TodolistService} from "./todolist.service";
+import {TodolistService} from "./todo/todolist.service";
 import {HistoryService} from "./history.service";
 
 @Injectable({

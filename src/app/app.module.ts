@@ -10,12 +10,14 @@ import { environment } from '../environments/environment';
 import { provideAuth,getAuth } from '@angular/fire/auth';
 import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 import {AngularFireModule} from "@angular/fire/compat";
+import { NavBarComponent } from './nav-bar/nav-bar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TodoListComponent,
     TodoItemComponent,
+    NavBarComponent,
   ],
   imports: [
     BrowserModule,
