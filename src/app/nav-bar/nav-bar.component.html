@@ -1,6 +1,6 @@
 <header class="nav-bar">
   <div *ngIf="auth.user | async as user; else showLogin" class="nav-bar-container">
-    <img src="{{user.photoURL}}" alt="{{user.uid}}" class="profile-img">
+    <img src="{{user.photoURL}}" alt="avatar" class="profile-img">
     <h1>{{ user.displayName }}!</h1>
     <button class="material-nav-button danger-button" (click)="logout()">Se Déconnecter</button>
   </div>
