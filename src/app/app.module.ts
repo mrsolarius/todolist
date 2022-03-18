@@ -8,9 +8,8 @@ import { TodoItemComponent } from './todo/todo-item/todo-item.component';
 import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
 import { provideAuth,getAuth } from '@angular/fire/auth';
-import { provideFirestore,getFirestore } from '@angular/fire/firestore';
-import {AngularFireModule} from "@angular/fire/compat";
 import { NavBarComponent } from './nav-bar/nav-bar.component';
+import {AngularFireModule} from "@angular/fire/compat";
 
 @NgModule({
   declarations: [
@@ -24,7 +23,6 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
     FormsModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
-    provideFirestore(() => getFirestore()),
     AngularFireModule.initializeApp(environment.firebase)
   ],
   providers: [],
