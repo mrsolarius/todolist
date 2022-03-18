@@ -46,7 +46,6 @@ export class TodolistService {
       ]
     }
     this.subj.next(newValue);
-    this.history.push(newValue);
     return this;
   }
 
