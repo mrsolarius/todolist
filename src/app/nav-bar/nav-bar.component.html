@@ -29,7 +29,7 @@
   <section class="login-section">
     <div class="section-padding">
       <div *ngIf="auth.user | async as user; else showLogin" class="profile-container">
-        <img src="{{user.photoURL}}" alt="avatar" class="profile-img">
+        <img src="{{user.photoURL}}" alt="avatar" class="profile-img" referrerpolicy="no-referrer">
         <div class="profile-display">
           <h1>{{ user.displayName }}!</h1>
           <h2>{{ user.email }}</h2>
