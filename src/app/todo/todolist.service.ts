@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { HistoryService } from "../history.service";
+import {AngularFireDatabase, AngularFireList} from "@angular/fire/compat/database";
+import {AngularFireAuth} from "@angular/fire/compat/auth";
 
 export interface TodoItem {
   readonly label: string;
@@ -22,7 +24,23 @@ export class TodolistService {
   private subj = new BehaviorSubject<TodoList>({label: 'L3 MIAGE', items: [] });
   readonly observable = this.subj.asObservable();
 
-  constructor(private history : HistoryService<TodoList>) {
+  constructor(private history : HistoryService<TodoList>,private db: AngularFireDatabase, public auth: AngularFireAuth) {
+    this.auth.user.subscribe(user => {
+      if (user) {
+        const sendData : AngularFireList<TodoList> = this.db.list(`/todo`);
+        this.observable.subscribe(data => {
+          sendData.update(user.uid, data);
+        });
+
+        const reciveData = this.db.list<TodoItem>(`/todo/${user.uid}/items`);
+        reciveData.valueChanges().subscribe(data => {
+          console.log(data);
+          if(data.length > 0){
+            this.subj.next({label: 'L3 MIAGE', items: data});
+          }
+        });
+      }
+    });
     const key = localStorage.getItem('todolist');
     if (key) {
       this.subj.next(JSON.parse(key));

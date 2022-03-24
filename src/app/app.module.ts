@@ -10,6 +10,7 @@ import { environment } from '../environments/environment';
 import { provideAuth,getAuth } from '@angular/fire/auth';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import {AngularFireModule} from "@angular/fire/compat";
+import {AngularFireStorageModule} from "@angular/fire/compat/storage";
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import {AngularFireModule} from "@angular/fire/compat";
     FormsModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
-    AngularFireModule.initializeApp(environment.firebase)
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireStorageModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
