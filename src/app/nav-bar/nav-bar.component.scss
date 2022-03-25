@@ -46,6 +46,7 @@ section{
 }
 
 .nav-bar{
+  position: fixed;
   display: flex;
   flex-direction: column;
   align-content: start;
@@ -53,6 +54,19 @@ section{
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   height: 100vh;
+}
+
+@media screen and (max-width: 960px) {
+  .nav-bar{
+    position:relative;
+    display: flex;
+    flex-direction: column;
+    align-content: start;
+    flex-wrap: wrap;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    height: 100%;
+  }
 }
 
 .material-nav-button{
