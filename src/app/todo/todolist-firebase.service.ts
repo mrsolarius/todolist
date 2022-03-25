@@ -16,9 +16,7 @@ export class TodolistFirebaseService extends TodolistService{
       if(user){
         this.userId = user.uid;
         this.db.database.ref(this.databaseKey+this.userId).on('value', (snapshot) => {
-          console.log("TodolistFirebaseService.onceValue");
-          console.log(snapshot.val());
-          this.publish(snapshot.val(),false);
+          this.publish({label:snapshot.val().label,items:snapshot.val().items?snapshot.val().items:[]},false);
         });
       }else{
         this.userId = null;
