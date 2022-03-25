@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import {BehaviorSubject, timeout} from 'rxjs';
 import { HistoryService } from "../history.service";
 import {AngularFireDatabase, AngularFireList} from "@angular/fire/compat/database";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
@@ -30,13 +30,10 @@ export class TodolistService {
     this.auth.authState.subscribe(user => {
       if (user) {
         this.userUid = user.uid;
-        this.db.database.ref(`/todo/${this.userUid}`).on('value', (snapshot) => {
-          if(snapshot.val()) {
-            if(snapshot.val().items) {
-              this.subj.next(snapshot.val());
-            }else {
-              this.subj.next({label: 'L3 MIAGE', items: [] });
-            }
+        this.db.database.ref(`/todo/${this.userUid}`).on('value', async (snapshot) => {
+          await timeout(20);
+          if(snapshot.val().items) {
+            this.subj.next(snapshot.val());
           }else {
             this.subj.next({label: 'L3 MIAGE', items: [] });
           }
