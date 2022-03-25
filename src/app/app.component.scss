@@ -8,3 +8,13 @@
   float: left;
   width: 30%;
 }
+
+
+@media screen and (max-width: 960px) {
+  .right-section{
+    width: 100%;
+  }
+  .left-section{
+    width: 100%;
+  }
+}

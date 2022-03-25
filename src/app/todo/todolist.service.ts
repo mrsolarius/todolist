@@ -23,32 +23,46 @@ let idItem = 0;
 export class TodolistService {
   private subj = new BehaviorSubject<TodoList>({label: 'L3 MIAGE', items: [] });
   readonly observable = this.subj.asObservable();
+  private userUid: string | null = null;
+  private sendData: AngularFireList<TodoList> | undefined;
 
   constructor(private history : HistoryService<TodoList>,private db: AngularFireDatabase, public auth: AngularFireAuth) {
-    this.auth.user.subscribe(user => {
+    this.auth.authState.subscribe(user => {
       if (user) {
-        const sendData : AngularFireList<TodoList> = this.db.list(`/todo`);
-        this.observable.subscribe(data => {
-          sendData.update(user.uid, data);
-        });
-
-        const reciveData = this.db.list<TodoItem>(`/todo/${user.uid}/items`);
-        reciveData.valueChanges().subscribe(data => {
-          console.log(data);
-          if(data.length > 0){
-            this.subj.next({label: 'L3 MIAGE', items: data});
+        this.userUid = user.uid;
+        this.db.database.ref(`/todo/${this.userUid}`).on('value', (snapshot) => {
+          if(snapshot.val()) {
+            if(snapshot.val().items) {
+              this.subj.next(snapshot.val());
+            }else {
+              this.subj.next({label: 'L3 MIAGE', items: [] });
+            }
+          }else {
+            this.subj.next({label: 'L3 MIAGE', items: [] });
           }
         });
+      } else {
+        this.userUid = null;
+        const key = localStorage.getItem('todolist');
+        if (key) {
+          this.subj.next(JSON.parse(key));
+        }
       }
     });
+
     const key = localStorage.getItem('todolist');
-    if (key) {
+    if (key && this.userUid==null) {
       this.subj.next(JSON.parse(key));
     }
 
     // Subscribe to change for saving and history
     this.observable.subscribe(L => {
-      localStorage.setItem('todolist', JSON.stringify(L));
+      if(this.userUid) {
+        this.sendData = this.db.list(`/todo`);
+        this.sendData.update(this.userUid, L);
+      }else{
+        localStorage.setItem('todolist', JSON.stringify(L));
+      }
     });
   }
 

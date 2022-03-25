@@ -9,14 +9,14 @@
     </form>
   </header>
   <section class="main">
-    <input class="toggle-all"
+    <input *ngIf="tdl.items.length>0" class="toggle-all"
            type="checkbox"
            name="toggleAll"
            id="toggleAll"
            (click)="toggleAll(tdl.items)"
            [checked]="isChecked(tdl.items)"
     />
-    <label for="toggleAll">Mark all as complete</label>
+    <label *ngIf="tdl.items.length>0" for="toggleAll">Mark all as complete</label>
     <ul class="todo-list">
       <li *ngFor="let item of preFilter(tdl.items); trackBy: trackById" [class.editing]="cItem.editing" [class.completed]="item.isDone">
        <app-todo-item [item]="item"
