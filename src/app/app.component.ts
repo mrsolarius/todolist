@@ -1,6 +1,5 @@
 import {Component, Injectable} from '@angular/core';
-import {TodolistService} from "./todo/todolist.service";
-import {HistoryService} from "./history.service";
+import {TodolistEncapsulateService} from "./todo/todolist-encapsulate.service";
 
 @Injectable({
   providedIn: 'root'
@@ -10,15 +9,7 @@ import {HistoryService} from "./history.service";
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   providers: [
-    {
-      provide: 'HISTORY_SERVICE_PROVIDER',
-      useValue: localStorage.getItem('todolist') ? JSON.parse(localStorage.getItem('todolist')!) : {
-        label: 'L3 MIAGE',
-        items: []
-      }
-    },
-    TodolistService,
-    HistoryService
+    TodolistEncapsulateService,
   ]
 })
 export class AppComponent {

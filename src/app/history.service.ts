@@ -1,11 +1,11 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 
 interface History<T> {
   canUndo: boolean;
   canRedo: boolean;
   history: T[];
   currentIndex: number;
-  current: T;
+  current: T|null;
 }
 
 
@@ -16,13 +16,13 @@ interface History<T> {
 export class HistoryService<T>{
   private history: History<T>;
 
-  constructor(@Inject('HISTORY_SERVICE_PROVIDER') history: T) {
+  constructor() {
     this.history = {
       canUndo: false,
       canRedo: false,
-      history: [history],
-      currentIndex: 0,
-      current: history
+      history: [],
+      currentIndex: -1,
+      current: null
     };
   }
 
@@ -58,5 +58,15 @@ export class HistoryService<T>{
       }
     }
     return this.history.current;
+  }
+
+  resetHistory(){
+    this.history = {
+      canUndo: false,
+      canRedo: false,
+      history: [],
+      currentIndex: -1,
+      current: null
+    };
   }
 }

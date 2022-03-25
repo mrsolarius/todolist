@@ -1,5 +1,6 @@
 import {Component, OnInit, ChangeDetectionStrategy, HostListener} from '@angular/core';
-import {TodoItem, TodolistService} from "../todolist.service";
+import {TodoItem} from "../todolist.data";
+import {TodolistEncapsulateService} from "../todolist-encapsulate.service";
 
 export enum FilterEnum{
   All,
@@ -11,13 +12,16 @@ export enum FilterEnum{
   selector: 'app-todo-list',
   templateUrl: './todo-list.component.html',
   styleUrls: ['./todo-list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers:[
+    TodolistEncapsulateService
+  ]
 })
 export class TodoListComponent implements OnInit {
   filter : FilterEnum = FilterEnum.All
   statusEnum: typeof FilterEnum = FilterEnum;
 
-  constructor(public todoService: TodolistService) { }
+  constructor(public todoService: TodolistEncapsulateService) { }
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
