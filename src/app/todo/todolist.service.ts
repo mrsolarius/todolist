@@ -27,6 +27,13 @@ export class TodolistService {
   private sendData: AngularFireList<TodoList> | undefined;
 
   constructor(private history : HistoryService<TodoList>,private db: AngularFireDatabase, public auth: AngularFireAuth) {
+    /**
+     * @Todo : Crée deux nouveau service un pour le stockage firestore et un pour choisir entre le service local (celui ci) et le service firestore
+     * @Todo : Pour switcher entre chaque obserable on peut utiliser le pipe switchMap
+     * @Todo : Se renseigner sur les pipe switchMap et mergeMap dans la doc RxJs
+     *
+     * @Todo : Suprimer cette horrible prototype qui gère la sauvgarde dans firestore
+     */
     this.auth.authState.subscribe(user => {
       if (user) {
         this.userUid = user.uid;
