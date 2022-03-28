@@ -22,7 +22,7 @@ section{
   }
 }
 .section-padding{
-  width: 100%;
+  width: calc(100% - 40px);
   padding: 10px 20px;
 }
 
@@ -141,6 +141,22 @@ section{
     width: 80%;
     margin: 0 auto;
   }
+
+  .todo-list-chooser-container{
+    margin: auto auto 20px auto !important;
+  }
+
+  .todo-list-chooser-list li{
+    padding: 0!important;
+    border-radius: 20px;
+    .todo-list-link{
+      margin: auto;
+    }
+  }
+
+  .todo-lists-title{
+    text-align: center;
+  }
 }
 
 .todo-list-chooser-container{
@@ -189,6 +205,5 @@ section{
       font-size: 15px;
       text-decoration: none;
     }
-
   }
 }
