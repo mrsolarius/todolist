@@ -8,12 +8,6 @@ section{
   justify-content: space-between;
   width: 100%;
   margin: 0 auto;
-  @media (max-width: 768px) {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-  }
   border-bottom: 1px solid #ededed;
 }
 .heading-section{
@@ -30,9 +24,6 @@ section{
 .section-padding{
   width: 100%;
   padding: 10px 20px;
-  @media (max-width: 768px) {
-    padding: 0;
-  }
 }
 
 .login-section{
@@ -54,19 +45,6 @@ section{
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   height: 100vh;
-}
-
-@media screen and (max-width: 960px) {
-  .nav-bar{
-    position:relative;
-    display: flex;
-    flex-direction: column;
-    align-content: start;
-    flex-wrap: wrap;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    height: 100%;
-  }
 }
 
 .material-nav-button{
@@ -128,4 +106,35 @@ section{
 
 .login-button-container{
   margin-left: auto;
+}
+
+.single-big-button{
+  border-radius: 20px;
+  padding: 15px 20px;
+  box-shadow: 0 1px 2px 0 rgba(60,64,67,0.302),0 1px 3px 1px rgba(60,64,67,0.149);
+  &:hover{
+    box-shadow: 0 1px 3px 0 rgba(60,64,67,0.302),0 4px 8px 3px rgba(60,64,67,0.149);
+    background-color: #fafafb;
+  }
+}
+
+
+@media screen and (max-width: 1200px) {
+  .nav-bar{
+    position:relative;
+    display: flex;
+    flex-direction: column-reverse;
+    align-content: start;
+    flex-wrap: wrap;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    height: 100%;
+  }
+  .heading-section{
+    display: none;
+  }
+  .single-big-button{
+    width: 80%;
+    margin: 0 auto;
+  }
 }
