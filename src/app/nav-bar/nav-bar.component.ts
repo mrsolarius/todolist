@@ -21,8 +21,9 @@ export class NavBarComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  clickToEdit(element: HTMLDivElement){
+  clickToEdit(element: HTMLDivElement, name: HTMLInputElement){
     element.classList.add("focus");
+    name.focus();
   }
 
   unFocusEdit(element: HTMLDivElement) {

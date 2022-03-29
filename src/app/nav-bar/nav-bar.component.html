@@ -7,7 +7,7 @@
   </section>
   <section>
     <div class="section-padding">
-      <div class="create-todo-box" (focusout)="unFocusEdit(button)" (click)="clickToEdit(button)" #button>
+      <div class="create-todo-box" (focusout)="unFocusEdit(button)" (click)="clickToEdit(button,name)" #button>
         <form class="create-todo-form" (submit)="createTodo(button,name.value);name.value=''">
           <input class="create-todo-txt" type="text" name="" placeholder="Nom de votre todolist" autofocus #name>
         </form>
