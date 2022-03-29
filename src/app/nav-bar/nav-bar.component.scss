@@ -228,6 +228,7 @@ section{
 }
 
 .create-todo-txt{
+  opacity: 0;
   border: none;
   background: none;
   outline: none;
@@ -239,7 +240,6 @@ section{
 }
 
 .create-todo-form{
-  width: 0;
   height: 0;
 }
 
@@ -247,13 +247,13 @@ section{
 .create-todo-box.focus > .create-todo-form {
   width: unset;
   .create-todo-txt{
+    opacity: 100;
     width: 100%;
     padding: 0 6px;
   }
 }
 
 .create-todo-box.focus > .create-todo-btn{
-  opacity: 0;
   transform: translateX(0%);
-  cursor: text;
+  opacity: 0;
 }
