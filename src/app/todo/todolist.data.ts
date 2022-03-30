@@ -52,6 +52,7 @@ export abstract class TodolistService {
    * @param labels the labels of the new item
    */
   create(...labels: readonly string[]): this {
+    const preprocesLabel= labels.filter(label => label.trim().length > 0).map(label => label.trim());
     const L: TodoListsData = this.subj.value;
     if (L.selected === -1) {
       return this;
@@ -60,12 +61,13 @@ export abstract class TodolistService {
       ...L,
       lists: [
         ...L.lists.map((todoList, index) => {
+          const oldTodoItems = todoList.items===undefined?[]:todoList.items;
           if (index === L.selected) {
             return {
               ...todoList,
               items: [
-                ...todoList.items,
-                ...labels.map(label => ({
+                ...oldTodoItems,
+                ...preprocesLabel.map(label => ({
                   label,
                   isDone: false,
                   id: idItem++
