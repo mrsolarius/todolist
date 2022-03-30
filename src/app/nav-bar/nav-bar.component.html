@@ -7,7 +7,8 @@
   </section>
   <section>
     <div class="section-padding">
-      <div class="create-todo-box" (focusout)="unFocusEdit(button,element)" (click)="clickToEdit(button,element,name)" #button>
+      <div class="create-todo-box" (focusout)="unFocusEdit(button,element)" (click)="clickToEdit(button,element,name)"
+           #button>
         <form class="create-todo-form" (submit)="createTodo(button,element,name.value);name.value=''">
           <input class="create-todo-txt" type="text" name="" placeholder="Nom de votre todolist" autofocus #name>
         </form>
@@ -35,24 +36,7 @@
   </section>
   <section class="login-section">
     <div class="section-padding">
-      <div *ngIf="auth.user | async as user; else showLogin" class="profile-container">
-        <img src="{{user.photoURL}}" alt="avatar" class="profile-img" referrerpolicy="no-referrer">
-        <div class="profile-display">
-          <h1>{{ user.displayName }}!</h1>
-          <h2>{{ user.email }}</h2>
-        </div>
-        <div class="login-button-container">
-          <button class="material-nav-button danger-button" (click)="logout()">Se déconnecter</button>
-        </div>
-      </div>
-      <ng-template #showLogin>
-        <div class="profile-container">
-          <p>Pour sauvegarder vos todolist veuillez vous connecter</p>
-          <div class="login-button-container">
-            <button class="material-nav-button success-button" (click)="login()">Se connecter</button>
-          </div>
-        </div>
-      </ng-template>
+      <app-nav-login></app-nav-login>
     </div>
   </section>
 </header>

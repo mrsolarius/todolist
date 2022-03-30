@@ -11,6 +11,7 @@ import { provideAuth,getAuth } from '@angular/fire/auth';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import {AngularFireModule} from "@angular/fire/compat";
 import {AngularFireStorageModule} from "@angular/fire/compat/storage";
+import { NavLoginComponent } from './nav-bar/nav-login/nav-login.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import {AngularFireStorageModule} from "@angular/fire/compat/storage";
     TodoListComponent,
     TodoItemComponent,
     NavBarComponent,
+    NavLoginComponent,
   ],
   imports: [
     BrowserModule,
