@@ -1,5 +1,5 @@
 import {Injectable, Injector} from '@angular/core';
-import {TodoList, TodolistService} from "./todolist.data";
+import {DEFAULT_LIST, TodoListsData, TodolistService} from "./todolist.data";
 import {AngularFireDatabase} from "@angular/fire/compat/database";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
 
@@ -16,7 +16,11 @@ export class TodolistFirebaseService extends TodolistService{
       if(user){
         this.userId = user.uid;
         this.db.database.ref(this.databaseKey+this.userId).on('value', (snapshot) => {
-          this.publish({label:snapshot.val().label,items:snapshot.val().items?snapshot.val().items:[]},false);
+          console.log();
+          return this.publish(snapshot.val()?snapshot.val():{
+            ...DEFAULT_LIST,
+            account: this.userId
+          }, false);
         });
       }else{
         this.userId = null;
@@ -24,7 +28,7 @@ export class TodolistFirebaseService extends TodolistService{
     });
   }
 
-  publish(todolist: TodoList, withHistory : boolean): void {
+  publish(todolist: TodoListsData, withHistory : boolean): void {
     if (this.userId) {
       this.db.list(this.databaseKey).update(this.userId,todolist);
       this.subj.next(todolist);

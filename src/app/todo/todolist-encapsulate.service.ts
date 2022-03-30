@@ -1,7 +1,7 @@
 import {Injectable, Injector} from '@angular/core';
 import {TodolistFirebaseService} from "./todolist-firebase.service";
 import {TodolistLocalService} from "./todolist-local.service";
-import {TodoList, TodolistService} from "./todolist.data";
+import {TodoListsData, TodolistService} from "./todolist.data";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
 import {switchMap} from "rxjs";
 
@@ -33,7 +33,7 @@ export class TodolistEncapsulateService extends TodolistService{
 
   }
 
-  publish(todolist: TodoList, withHistory: boolean): void {
+  publish(todolist: TodoListsData, withHistory: boolean): void {
     //if user is auth publish to todolistfirebase else publish to todolistlocal
     if(this.isAuth){
       this.todolistFireBase.publish(todolist,withHistory);

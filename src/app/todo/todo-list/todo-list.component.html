@@ -1,6 +1,7 @@
 <section class="todoapp" *ngIf="observer | async as tdl">
+  <ng-container *ngIf="tdl.selected>=0 && tdl.lists.length > 0">
   <header class="header">
-    <h1>{{tdl.label}}</h1>
+    <h1>{{tdl.lists[tdl.selected].label}}</h1>
     <form (submit)="create(name.value);name.value=''">
       <input name="newTodoInput"
              class="new-todo"
@@ -9,16 +10,16 @@
     </form>
   </header>
   <section class="main">
-    <input *ngIf="tdl.items.length>0" class="toggle-all"
+    <input *ngIf="tdl.lists[tdl.selected].items.length>0" class="toggle-all"
            type="checkbox"
            name="toggleAll"
            id="toggleAll"
-           (click)="toggleAll(tdl.items)"
-           [checked]="isChecked(tdl.items)"
+           (click)="toggleAll(tdl.lists[tdl.selected].items)"
+           [checked]="isChecked(tdl.lists[tdl.selected].items)"
     />
-    <label *ngIf="tdl.items.length>0" for="toggleAll">Mark all as complete</label>
+    <label *ngIf="tdl.lists[tdl.selected].items.length>0" for="toggleAll">Mark all as complete</label>
     <ul class="todo-list">
-      <li *ngFor="let item of preFilter(tdl.items); trackBy: trackById" [class.editing]="cItem.editing" [class.completed]="item.isDone">
+      <li *ngFor="let item of preFilter(tdl.lists[tdl.selected].items); trackBy: trackById" [class.editing]="cItem.editing" [class.completed]="item.isDone">
        <app-todo-item [item]="item"
                       (delete)="delete(item)"
                       (update)="update($event,item)"
@@ -26,8 +27,8 @@
        ></app-todo-item>
     </ul>
   </section>
-  <footer class="footer" *ngIf="tdl.items.length>0">
-    <span class="todo-count"><strong>{{todoCount(tdl.items)}}</strong> restantes</span>
+  <footer class="footer" *ngIf="tdl.lists[tdl.selected].items.length>0">
+    <span class="todo-count"><strong>{{todoCount(tdl.lists[tdl.selected].items)}}</strong> restantes</span>
     <ul class="filters">
       <li>
         <a class="filterAll" style="cursor: pointer"
@@ -45,6 +46,7 @@
            (click)="filter=statusEnum.Completed">Complétés</a>
       </li>
     </ul>
-    <button *ngIf="todoCount(tdl.items)<tdl.items.length" class="clear-completed" style="cursor: pointer" (click)="deleteSelected(tdl.items)">Supprimer cochées</button>
+    <button *ngIf="todoCount(tdl.lists[tdl.selected].items)<tdl.lists[tdl.selected].items.length" class="clear-completed" style="cursor: pointer" (click)="deleteSelected(tdl.lists[tdl.selected].items)">Supprimer cochées</button>
   </footer>
+  </ng-container>
 </section>

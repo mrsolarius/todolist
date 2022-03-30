@@ -14,11 +14,21 @@ export interface TodoList {
   readonly label: string;
   readonly items: readonly TodoItem[];
 }
+
+export interface TodoListsData {
+  readonly account: string;
+  readonly selected: number;
+  readonly lists: readonly TodoList[];
+}
+
+export const DEFAULT_LIST : TodoListsData= {account: "local", selected: -1, lists: []};
+
 // To provide unique id for each item
 let idItem = 0;
-export abstract class TodolistService{
-  protected history : HistoryService<TodoList>
-  protected subj = new BehaviorSubject<TodoList>({label: 'L3 MIAGE', items: [] });
+
+export abstract class TodolistService {
+  protected history: HistoryService<TodoListsData>
+  protected subj = new BehaviorSubject<TodoListsData>(DEFAULT_LIST);
   public readonly observable = this.subj.asObservable();
 
   protected constructor(injector: Injector) {
@@ -34,25 +44,41 @@ export abstract class TodolistService{
    * @param todolist the new todolist
    * @param withHistory if true, the change will be stored in the history
    */
-  abstract publish(todolist : TodoList, withHistory : boolean):void;
+  abstract publish(todolist: TodoListsData, withHistory: boolean): void;
 
   /**
    * Add a new items to the todolist
    * It will call the publish method with history set to true
    * @param labels the labels of the new item
    */
-  create(...labels: readonly string[]): this{
-    const L: TodoList = this.subj.value;
-    const newValue : TodoList = {
+  create(...labels: readonly string[]): this {
+    const L: TodoListsData = this.subj.value;
+    if (L.selected === -1) {
+      return this;
+    }
+    const newValue: TodoListsData = {
       ...L,
-      items: [
-        ...L.items,
-        ...labels.filter( l => l !== '').map(
-          label => ({label, isDone: false, id: idItem++})
-        )
+      lists: [
+        ...L.lists.map((todoList, index) => {
+          if (index === L.selected) {
+            return {
+              ...todoList,
+              items: [
+                ...todoList.items,
+                ...labels.map(label => ({
+                  label,
+                  isDone: false,
+                  id: idItem++
+                }))
+              ]
+            }
+          }
+          return todoList;
+        })
+
       ]
     }
-    this.publish(newValue,true);
+    this.publish(newValue, true);
     return this;
   }
 
@@ -61,13 +87,44 @@ export abstract class TodolistService{
    * It will call the publish method with history set to true
    * @param items the items to remove
    */
-  delete(...items: readonly TodoItem[]): this{
+  delete(...items: readonly TodoItem[]): this {
     const L = this.subj.value;
-    const newValue : TodoList ={
-      ...L,
-      items: L.items.filter(item => items.indexOf(item) === -1 )
+    if (L.selected === -1) {
+      return this;
     }
-    this.publish(newValue,true);
+    const newValue: TodoListsData = {
+      ...L,
+      lists: [
+        ...L.lists.map((todoList, index) => {
+          if (index === L.selected) {
+            return {
+              ...todoList,
+              items: todoList.items.filter(item => items.indexOf(item) === -1)
+            }
+          }
+          return todoList;
+        })
+      ]
+    }
+    this.publish(newValue, true);
+    return this;
+  }
+
+  /**
+   * Select a todolist by its index
+   * @param index the index of the todolist
+   */
+  selectTodoList(index: number): this {
+    const L = this.subj.value;
+    if (L.selected === index) {
+      return this;
+    }
+    const newValue: TodoListsData = {
+      ...L,
+      selected: index
+    }
+    this.history.resetHistory();
+    this.publish(newValue, false);
     return this;
   }
 
@@ -77,12 +134,25 @@ export abstract class TodolistService{
    * @param data the item to update
    * @param items the list of items to update
    */
-  update(data: Partial<TodoItem>, ...items: readonly TodoItem[]): this{
-    if(data.label !== "") {
+  update(data: Partial<TodoItem>, ...items: readonly TodoItem[]): this {
+    if (data.label !== "") {
       const L = this.subj.value;
-      const newValue : TodoList ={
+      if (L.selected === -1) {
+        return this;
+      }
+      const newValue: TodoListsData = {
         ...L,
-        items: L.items.map( item => items.indexOf(item) >= 0 ? {...item, ...data} : item )
+        lists: [
+          ...L.lists.map((todoList, index) => {
+            if (index === L.selected) {
+              return {
+                ...todoList,
+                items: todoList.items.map(item => items.indexOf(item) >= 0 ? {...item, ...data} : item)
+              }
+            }
+            return todoList;
+          })
+        ]
       }
       this.publish(newValue, true);
     } else {
@@ -92,13 +162,55 @@ export abstract class TodolistService{
   }
 
   /**
+   * Create a new todolist
+   * @param label the label of the new todolist
+   */
+  createTodoList(label: string): this {
+    const L = this.subj.value;
+    const selected = L.lists.length;
+    const newValue: TodoListsData = {
+      ...L,
+      selected,
+      lists: [
+        ...L.lists,
+        {
+          label,
+          items: []
+        }
+      ]
+    }
+    this.history.resetHistory();
+    this.publish(newValue, false);
+    return this;
+  }
+
+  /**
+   * Delete a todolist
+   * @param index the index of the todolist to delete
+   */
+  deleteTodoList(index: number): this {
+    const L = this.subj.value;
+    if (L.selected === index) {
+      return this;
+    }
+    const newValue: TodoListsData = {
+      ...L,
+      lists: L.lists.filter((_, i) => i !== index),
+      selected: -1
+    }
+    this.history.resetHistory();
+    this.publish(newValue, true);
+    return this;
+  }
+
+  /**
    * Undo the last change
    * It will call the publish method with history set too false to avoid infinite loop
    */
   undo(): this {
     const L = this.history.undo();
-    if(L!==null) {
-      this.publish(L,false)
+    if (L !== null) {
+      this.publish(L, false)
     }
     return this;
   }
@@ -107,10 +219,10 @@ export abstract class TodolistService{
    * Redo the last change
    * It will call the publish method with history set too false to avoid infinite loop
    */
-  redo(): this{
+  redo(): this {
     const L = this.history.redo();
-    if(L!==null) {
-      this.publish(L,false)
+    if (L !== null) {
+      this.publish(L, false)
     }
     return this;
   }

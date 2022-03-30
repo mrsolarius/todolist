@@ -1,15 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {TodolistEncapsulateService} from "../../todo/todolist-encapsulate.service";
 
 @Component({
   selector: 'app-nav-todo-list-manger',
   templateUrl: './nav-todo-lists-manger.component.html',
-  styleUrls: ['./nav-todo-lists-manger.component.scss']
+  styleUrls: ['./nav-todo-lists-manger.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavTodoListsMangerComponent implements OnInit {
 
-  constructor() { }
+  constructor(private todoListsServices : TodolistEncapsulateService) { }
 
   ngOnInit(): void {
+  }
+
+  get observer() {
+    return this.todoListsServices.observable;
   }
 
   clickToEdit(element: HTMLDivElement, link: HTMLAnchorElement, name: HTMLInputElement){
@@ -29,6 +35,10 @@ export class NavTodoListsMangerComponent implements OnInit {
 
   createTodo(btn: HTMLDivElement, link: HTMLAnchorElement, name: string) {
     this.unFocusEdit(btn, link);
-    console.log(name);
+    this.todoListsServices.createTodoList(name);
+  }
+
+  selectList(index: number) {
+    this.todoListsServices.selectTodoList(index);
   }
 }

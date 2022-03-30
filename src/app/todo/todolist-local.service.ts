@@ -1,5 +1,5 @@
 import {Injectable, Injector} from '@angular/core';
-import {TodoList, TodolistService} from "./todolist.data";
+import {DEFAULT_LIST, TodoListsData, TodolistService} from "./todolist.data";
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +12,12 @@ export class TodolistLocalService extends TodolistService{
     const key = localStorage.getItem('todolist');
     if (key) {
       this.publish(JSON.parse(key),false);
+    }else {
+      this.publish(DEFAULT_LIST,false);
     }
   }
 
-  override publish(todolist: TodoList,saveHistory: boolean): void {
+  override publish(todolist: TodoListsData,saveHistory: boolean): void {
     // Save the list in local storage
     localStorage.setItem('todolist', JSON.stringify(todolist));
     this.subj.next(todolist);
