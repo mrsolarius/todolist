@@ -367,3 +367,9 @@ html .clear-completed:active {
     bottom: 10px;
   }
 }
+
+
+.section-padding{
+  width: calc(100% - 40px);
+  padding: 10px 20px;
+}
