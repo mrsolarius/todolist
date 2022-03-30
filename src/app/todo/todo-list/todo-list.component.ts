@@ -1,5 +1,5 @@
 import {Component, OnInit, ChangeDetectionStrategy, HostListener} from '@angular/core';
-import {TodoItem} from "../todolist.data";
+import {TodoItem, TodoListsData} from "../todolist.data";
 import {TodolistEncapsulateService} from "../todolist-encapsulate.service";
 
 export enum FilterEnum{
@@ -80,5 +80,9 @@ export class TodoListComponent implements OnInit {
 
   todoCount(obsList: readonly TodoItem[]) {
     return obsList.filter(value => !value.isDone).length
+  }
+
+  thereIsItems(tdl: TodoListsData) {
+    return tdl.selected>=0 && tdl.lists[tdl.selected].items !== undefined && tdl.lists[tdl.selected].items.length>0
   }
 }
