@@ -1,0 +1,29 @@
+<section>
+  <div class="section-padding">
+    <div class="create-todo-box" (focusout)="unFocusEdit(button,element)" (click)="clickToEdit(button,element,name)"
+         #button>
+      <form class="create-todo-form" (submit)="createTodo(button,element,name.value);name.value=''">
+        <input class="create-todo-txt" type="text" name="" placeholder="Nom de votre todolist" autofocus #name>
+      </form>
+      <a class="create-todo-btn" #element>Crée une TODO List</a>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="section-padding todo-lists-title">
+    <h1>Vos Todo Lists</h1>
+  </div>
+  <div class="todo-list-chooser-container">
+    <ul class="todo-list-chooser-list">
+      <li class="active">
+        <a class="todo-list-link" href="#">TodoList 1</a>
+      </li>
+      <li>
+        <a class="todo-list-link" href="#">TodoList 2</a>
+      </li>
+      <li>
+        <a class="todo-list-link" href="#">TodoList 3</a>
+      </li>
+    </ul>
+  </div>
+</section>

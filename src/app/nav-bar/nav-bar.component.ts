@@ -11,24 +11,4 @@ export class NavBarComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
-  clickToEdit(element: HTMLDivElement, link: HTMLAnchorElement, name: HTMLInputElement){
-    element.classList.add("focus");
-    name.focus();
-    setTimeout(() => {
-      link.style.display = "none";
-    },400);
-  }
-
-  unFocusEdit(element: HTMLDivElement, link: HTMLAnchorElement) {
-    link.style.display = "unset";
-    setTimeout(() => {
-      element.classList.remove("focus");
-    },10);
-  }
-
-  createTodo(btn: HTMLDivElement, link: HTMLAnchorElement, name: string) {
-    this.unFocusEdit(btn, link);
-    console.log(name);
-  }
 }
