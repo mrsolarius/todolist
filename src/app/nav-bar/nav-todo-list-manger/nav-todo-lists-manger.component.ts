@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {TodolistEncapsulateService} from "../../todo/todolist-encapsulate.service";
+import {TodoListsData} from "../../todo/todolist.data";
 
 @Component({
   selector: 'app-nav-todo-list-manger',

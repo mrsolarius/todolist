@@ -149,12 +149,13 @@ export abstract class TodolistService {
    */
   createTodoList(label: string): this {
     const L = this.subj.value;
-    const selected = L.lists.length;
+    const oldList = L.lists===undefined?[]:L.lists;
+    const selected = L.lists===undefined?0:L.lists.length;
     const newValue: TodoListsData = {
       ...L,
       selected,
       lists: [
-        ...L.lists,
+        ...oldList,
         {
           label,
           items: []
