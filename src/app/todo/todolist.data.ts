@@ -111,24 +111,6 @@ export abstract class TodolistService {
   }
 
   /**
-   * Select a todolist by its index
-   * @param index the index of the todolist
-   */
-  selectTodoList(index: number): this {
-    const L = this.subj.value;
-    if (L.selected === index) {
-      return this;
-    }
-    const newValue: TodoListsData = {
-      ...L,
-      selected: index
-    }
-    this.history.resetHistory();
-    this.publish(newValue, false);
-    return this;
-  }
-
-  /**
    * Update the label of an item
    * It will call the publish method with history set to true
    * @param data the item to update
@@ -200,6 +182,24 @@ export abstract class TodolistService {
     }
     this.history.resetHistory();
     this.publish(newValue, true);
+    return this;
+  }
+
+  /**
+   * Select a todolist by its index
+   * @param index the index of the todolist
+   */
+  selectTodoList(index: number): this {
+    const L = this.subj.value;
+    if (L.selected === index) {
+      return this;
+    }
+    const newValue: TodoListsData = {
+      ...L,
+      selected: index
+    }
+    this.history.resetHistory();
+    this.publish(newValue, false);
     return this;
   }
 
