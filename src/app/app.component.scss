@@ -1,20 +1,27 @@
-.right-section{
-  float: right;
-  width: 70%;
+.app-container{
+  display: flex;
   height: 100vh;
 }
 
+.right-section{
+  margin: 0 auto;
+  width:70%
+}
+
 .left-section{
-  float: left;
-  width: 30%;
+  max-width: 435px;
 }
 
 
 @media screen and (max-width: 1200px) {
+  .app-container{
+    flex-wrap: wrap;
+  }
   .right-section{
     width: 100%;
   }
   .left-section{
     width: 100%;
+    max-width: unset;
   }
 }
