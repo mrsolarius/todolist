@@ -7,11 +7,15 @@ section{
     margin: auto auto 20px auto !important;
   }
 
-  .todo-list-chooser-list li{
+  .todo-list-chooser-list li>.todo-list-nav-item{
     padding: 0!important;
     border-radius: 20px;
     .todo-list-link-select{
+      transform: translateX(16px);
       margin: auto;
+    }
+    .todo-list-link-destroy{
+      margin: unset;
     }
   }
 
@@ -47,7 +51,7 @@ section{
     }
   }
   li>.todo-list-nav-item{
-    width: 80%;
+    width: 100%;
     align-items: center;
     display: flex;
     height: 32px;
