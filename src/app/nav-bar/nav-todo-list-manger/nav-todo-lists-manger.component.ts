@@ -1,6 +1,5 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {TodolistEncapsulateService} from "../../todo/todolist-encapsulate.service";
-import {TodoListsData} from "../../todo/todolist.data";
 
 @Component({
   selector: 'app-nav-todo-list-manger',
@@ -41,5 +40,9 @@ export class NavTodoListsMangerComponent implements OnInit {
 
   selectList(index: number) {
     this.todoListsServices.selectTodoList(index);
+  }
+
+  deleteList(index: number) {
+    this.todoListsServices.deleteTodoList(index);
   }
 }

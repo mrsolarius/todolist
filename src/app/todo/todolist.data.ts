@@ -21,7 +21,7 @@ export interface TodoListsData {
   readonly lists: readonly TodoList[];
 }
 
-export const DEFAULT_LIST : TodoListsData= {account: "local", selected: -1, lists: []};
+export const DEFAULT_LIST: TodoListsData = {account: "local", selected: -1, lists: []};
 
 // To provide unique id for each item
 let idItem = 0;
@@ -52,7 +52,7 @@ export abstract class TodolistService {
    * @param labels the labels of the new item
    */
   create(...labels: readonly string[]): this {
-    const preprocessLabel= labels.filter(label => label.trim().length > 0).map(label => label.trim());
+    const preprocessLabel = labels.filter(label => label.trim().length > 0).map(label => label.trim());
     const L: TodoListsData = this.subj.value;
     if (L.selected === -1) {
       return this;
@@ -61,7 +61,7 @@ export abstract class TodolistService {
       ...L,
       lists: [
         ...L.lists.map((todoList, index) => {
-          const oldTodoItems = todoList.items===undefined?[]:todoList.items;
+          const oldTodoItems = todoList.items === undefined ? [] : todoList.items;
           if (index === L.selected) {
             return {
               ...todoList,
@@ -151,8 +151,8 @@ export abstract class TodolistService {
    */
   createTodoList(label: string): this {
     const L = this.subj.value;
-    const oldList = L.lists===undefined?[]:L.lists;
-    const selected = L.lists===undefined?0:L.lists.length;
+    const oldList = L.lists === undefined ? [] : L.lists;
+    const selected = L.lists === undefined ? 0 : L.lists.length;
     const newValue: TodoListsData = {
       ...L,
       selected,
@@ -175,13 +175,13 @@ export abstract class TodolistService {
    */
   deleteTodoList(index: number): this {
     const L = this.subj.value;
-    if (L.selected === index) {
-      return this;
-    }
+    // if we delete the first element select the second one if exists
+    // else if juste remove 1 to the selected index
+    const selected = L.selected - 1 === -1 ? L.lists.length - 1 > 0 ? 0 : -1 : L.selected - 1;
     const newValue: TodoListsData = {
       ...L,
       lists: L.lists.filter((_, i) => i !== index),
-      selected: -1
+      selected
     }
     this.history.resetHistory();
     this.publish(newValue, true);
