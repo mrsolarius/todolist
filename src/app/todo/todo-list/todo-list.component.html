@@ -1,7 +1,7 @@
 <section class="todoapp" *ngIf="observer | async as tdl">
   <ng-container *ngIf="tdl.selected>=0">
   <header class="header">
-    <h1>{{tdl.lists[tdl.selected].label}}</h1>
+    <h1 title="{{tdl.lists[tdl.selected].label}}">{{tdl.lists[tdl.selected].label}}</h1>
     <form (submit)="create(name.value);name.value=''">
       <input name="newTodoInput"
              class="new-todo"
