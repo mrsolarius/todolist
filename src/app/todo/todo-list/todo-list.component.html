@@ -9,7 +9,7 @@
              autofocus #name/>
     </form>
   </header>
-  <section class="main">
+  <section [class.main]="thereIsItems(tdl)">
     <input *ngIf="thereIsItems(tdl)" class="toggle-all"
            type="checkbox"
            name="toggleAll"
