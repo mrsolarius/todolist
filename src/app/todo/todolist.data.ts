@@ -189,6 +189,32 @@ export abstract class TodolistService {
   }
 
   /**
+   * Update the label of a todolist
+   * @param index the index of the todolist to update
+   * @param label the new label
+   */
+  updateTodoList(index: number, label: string): this {
+    const L = this.subj.value;
+    const newValue: TodoListsData = {
+      ...L,
+      lists: [
+        ...L.lists.map((todoList, i) => {
+          if (i === index) {
+            return {
+              ...todoList,
+              label
+            }
+          }
+          return todoList;
+        })
+      ]
+    }
+    this.history.resetHistory();
+    this.publish(newValue, true);
+    return this;
+  }
+
+  /**
    * Select a todolist by its index
    * @param index the index of the todolist
    */

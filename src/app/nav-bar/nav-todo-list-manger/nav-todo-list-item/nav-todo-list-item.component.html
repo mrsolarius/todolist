@@ -1,0 +1,10 @@
+<div class="todo-list-nav-item" (click)="selectList(index)" [class.active]="selected==index" (dblclick)="startEdit(todoListName)" [class.edit-mode]="editing">
+  <a class="todo-list-link-select" title="{{todoList.label}}">{{todoList.label}}</a>
+  <button class="todo-list-link-destroy" (click)="deleteList(index)"></button>
+  <input  class="todo-list-link-editor"
+          type="text"
+          value="{{todoList.label}}"
+          (keyup.enter)="saveEdit(todoListName.value)"
+          (blur)="saveEdit(todoListName.value)"
+          #todoListName>
+</div>

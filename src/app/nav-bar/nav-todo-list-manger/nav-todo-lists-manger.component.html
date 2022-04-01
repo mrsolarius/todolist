@@ -17,10 +17,14 @@
     <div class="todo-list-chooser-container">
       <ul class="todo-list-chooser-list">
         <li *ngFor="let todolist of tdl.lists; let index = index;">
-          <div class="todo-list-nav-item" (click)="selectList(index)" [class.active]="tdl.selected==index">
-            <a class="todo-list-link-select" title="{{todolist.label}}">{{todolist.label}}</a>
-            <button class="todo-list-link-destroy" (click)="deleteList(index)"></button>
-          </div>
+          <app-nav-todo-list-item class="todo-li-cpm"
+                                  [todoList]="todolist"
+                                  [index]="index"
+                                  [selected]="tdl.selected"
+                                  (deleteTodoList)="deleteList($event)"
+                                  (editTodoListLabel)="editeList($event)"
+                                  (selectTodoList)="selectList($event)">
+          </app-nav-todo-list-item>
         </li>
       </ul>
     </div>

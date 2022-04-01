@@ -13,6 +13,7 @@ import {AngularFireModule} from "@angular/fire/compat";
 import {AngularFireStorageModule} from "@angular/fire/compat/storage";
 import { NavLoginComponent } from './nav-bar/nav-login/nav-login.component';
 import { NavTodoListsMangerComponent } from './nav-bar/nav-todo-list-manger/nav-todo-lists-manger.component';
+import { NavTodoListItemComponent } from './nav-bar/nav-todo-list-manger/nav-todo-list-item/nav-todo-list-item.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { NavTodoListsMangerComponent } from './nav-bar/nav-todo-list-manger/nav-
     NavBarComponent,
     NavLoginComponent,
     NavTodoListsMangerComponent,
+    NavTodoListItemComponent,
   ],
   imports: [
     BrowserModule,

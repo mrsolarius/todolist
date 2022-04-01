@@ -45,4 +45,8 @@ export class NavTodoListsMangerComponent implements OnInit {
   deleteList(index: number) {
     this.todoListsServices.deleteTodoList(index);
   }
+
+  editeList(value : [number,string]) {
+    this.todoListsServices.updateTodoList(value[0], value[1]);
+  }
 }
