@@ -5,6 +5,7 @@
          [ngModel]="item.isDone"
          (ngModelChange)="update.emit({isDone:!item.isDone})"
   />
+  <img class="img-item" *ngIf="observable | async as url" src="{{url}}" alt="">
   <label class="texte">
     {{ item.label }}
   </label>

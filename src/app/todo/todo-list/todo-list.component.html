@@ -2,11 +2,12 @@
   <ng-container *ngIf="tdl.selected>=0">
     <header class="header">
       <h1 title="{{tdl.lists[tdl.selected].label}}">{{tdl.lists[tdl.selected].label}}</h1>
-      <form (submit)="create(name.value);name.value=''">
+      <form (submit)="create(name.value,file.files);name.value='';file.value=''">
         <input name="newTodoInput"
                class="new-todo"
                placeholder="Que faire?"
                autofocus #name/>
+        <input type="file" accept="image/png, image/jpeg" #file/>
       </form>
     </header>
     <section [class.main]="thereIsItems(tdl)">

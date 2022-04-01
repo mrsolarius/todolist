@@ -20,6 +20,7 @@ export enum FilterEnum{
 export class TodoListComponent implements OnInit {
   filter : FilterEnum = FilterEnum.All
   statusEnum: typeof FilterEnum = FilterEnum;
+  file : File | null = null;
 
   constructor(public todoService: TodolistEncapsulateService) { }
 
@@ -37,8 +38,11 @@ export class TodoListComponent implements OnInit {
     return this.todoService.observable;
   }
 
-  create(title: string) {
-    this.todoService.create(title);
+  create(title: string, files: FileList|null) {
+    this.todoService.create({
+      label:title,
+      photo:files?.length?files[0]:undefined
+    });
   }
 
   delete(item: TodoItem) {

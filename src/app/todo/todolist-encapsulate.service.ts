@@ -33,12 +33,30 @@ export class TodolistEncapsulateService extends TodolistService{
 
   }
 
-  publish(todolist: TodoListsData, withHistory: boolean): void {
+  override publish(todolist: TodoListsData, withHistory: boolean): void {
     //if user is auth publish to todolistfirebase else publish to todolistlocal
     if(this.isAuth){
       this.todolistFireBase.publish(todolist,withHistory);
     }else{
       this.todolistLocal.publish(todolist,withHistory);
+    }
+  }
+
+  override async savePhoto(file:File):Promise<string>{
+    //if user is auth publish to todolistfirebase else publish to todolistlocal
+    if(this.isAuth){
+      return this.todolistFireBase.savePhoto(file);
+    }else{
+      return this.todolistLocal.savePhoto(file);
+    }
+  }
+
+  getPhotoUrl(photo: string): Promise<string> {
+    //if user is auth publish to todolistfirebase else publish to todolistlocal
+    if(this.isAuth){
+      return this.todolistFireBase.getPhotoUrl(photo);
+    }else{
+      return this.todolistLocal.getPhotoUrl(photo);
     }
   }
 }

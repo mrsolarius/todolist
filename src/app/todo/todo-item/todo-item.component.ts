@@ -1,5 +1,7 @@
 import {Component, OnInit, ChangeDetectionStrategy, Input, EventEmitter, Output } from '@angular/core';
 import {TodoItem} from "../todolist.data";
+import {TodolistEncapsulateService} from "../todolist-encapsulate.service";
+import {Observable,from} from "rxjs";
 
 @Component({
   selector: 'app-todo-item[item]',
@@ -12,10 +14,15 @@ export class TodoItemComponent implements OnInit {
   @Output() delete = new EventEmitter<TodoItem>();
   @Output() update = new EventEmitter<Partial<TodoItem>>();
   public editing = false;
+  public observable: Observable<string | undefined> | undefined;
 
-  constructor() {}
+  constructor(public imp: TodolistEncapsulateService) {
+  }
 
   ngOnInit(): void {
+    if(this.item.photo) {
+      this.observable = from(this.imp.getPhotoUrl(this.item.photo));
+    }
   }
 
   startEditing(input : HTMLInputElement) {
@@ -30,6 +37,4 @@ export class TodoItemComponent implements OnInit {
     this.update.emit({label:value})
     this.editing = false;
   }
-
-
 }

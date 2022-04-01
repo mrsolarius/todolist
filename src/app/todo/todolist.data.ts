@@ -6,6 +6,14 @@ import {Injector} from "@angular/core";
 export interface TodoItem {
   readonly label: string;
   readonly isDone: boolean;
+  readonly photo: string|undefined;
+  readonly id: number;
+}
+
+export interface TodoItemFile{
+  readonly label: string;
+  readonly isDone: boolean;
+  readonly photo: File;
   readonly id: number;
 }
 
@@ -46,13 +54,28 @@ export abstract class TodolistService {
    */
   abstract publish(todolist: TodoListsData, withHistory: boolean): void;
 
+  abstract savePhoto(file:File):Promise<string>;
+
+  abstract getPhotoUrl(photo:string):Promise<string>;
+
   /**
    * Add a new items to the todolist
    * It will call the publish method with history set to true
-   * @param labels the labels of the new item
+   * @param todoItems the todoItems of the new item
    */
-  create(...labels: readonly string[]): this {
-    const preprocessLabel = labels.filter(label => label.trim().length > 0).map(label => label.trim());
+  async create(...todoItems: readonly Partial<TodoItemFile>[]): Promise<this> {
+    const preprocessTodoItemsPromise : Promise<TodoItem>[] = todoItems
+      .filter(todoItem => todoItem.label!=undefined && todoItem.label.trim().length > 0)
+      .map(async (todoItem) => {
+        return {
+          ...todoItem,
+          label: todoItem.label!.trim(),
+          isDone: todoItem.isDone!==undefined ? todoItem.isDone : false,
+          photo: todoItem.photo!==undefined ? await this.savePhoto(todoItem.photo) : '',
+          id: idItem++
+        }
+    });
+    const preprocessTodoItems = await Promise.all(preprocessTodoItemsPromise);
     const L: TodoListsData = this.subj.value;
     if (L.selected === -1) {
       return this;
@@ -67,11 +90,7 @@ export abstract class TodolistService {
               ...todoList,
               items: [
                 ...oldTodoItems,
-                ...preprocessLabel.map(label => ({
-                  label,
-                  isDone: false,
-                  id: idItem++
-                }))
+                ...preprocessTodoItems
               ]
             }
           }

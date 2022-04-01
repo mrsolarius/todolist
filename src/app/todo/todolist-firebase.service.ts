@@ -2,6 +2,9 @@ import {Injectable, Injector} from '@angular/core';
 import {DEFAULT_LIST, TodoListsData, TodolistService} from "./todolist.data";
 import {AngularFireDatabase} from "@angular/fire/compat/database";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
+import {v4 as uuid} from "uuid";
+import {AngularFireStorage} from "@angular/fire/compat/storage";
+
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +13,9 @@ export class TodolistFirebaseService extends TodolistService{
   private databaseKey : string  = '/todo/';
   private userId : string|null=null;
 
-  constructor(private db: AngularFireDatabase,private auth: AngularFireAuth, injector: Injector) {
+  constructor(private db: AngularFireDatabase,private auth: AngularFireAuth, injector: Injector, private storage: AngularFireStorage) {
     super(injector);
+    //init upload task
     auth.authState.subscribe(user => {
       if(user){
         this.userId = user.uid;
@@ -28,7 +32,7 @@ export class TodolistFirebaseService extends TodolistService{
     });
   }
 
-  publish(todolist: TodoListsData, withHistory : boolean): void {
+  override publish(todolist: TodoListsData, withHistory : boolean): void {
     if (this.userId) {
       this.db.list(this.databaseKey).update(this.userId,todolist);
       this.subj.next(todolist);
@@ -36,5 +40,24 @@ export class TodolistFirebaseService extends TodolistService{
         this.history.push(todolist);
       }
     }
+  }
+
+  override savePhoto(file:File):Promise<string>{
+    return new Promise((resolve, reject) => {
+      if(this.userId) {
+        const id = uuid();
+        this.storage.upload(this.databaseKey + this.userId + '/' + id, file).then(() => {
+            resolve(id);
+        }).catch(reject);
+      }
+    });
+  }
+
+  override getPhotoUrl(photo: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      if(this.userId && photo) {
+        this.storage.ref(this.databaseKey + this.userId + '/' + photo).getDownloadURL().toPromise().then(resolve).catch(reject);
+      }
+    });
   }
 }
