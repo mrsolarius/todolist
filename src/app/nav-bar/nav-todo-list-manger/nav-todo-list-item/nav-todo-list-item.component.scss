@@ -64,6 +64,9 @@
 
   &:active{
     background-color: #e8eaed;
+    .todo-list-link-destroy:after{
+      content: '×';
+    }
   }
 
   .todo-list-link-select{
