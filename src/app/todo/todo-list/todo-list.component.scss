@@ -1,0 +1,80 @@
+.form-todo{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.check-box-container{
+  padding: 16px;
+  align-items: center;
+  display: flex;
+}
+
+.toggle-all {
+  width: 1px;
+  height: 1px;
+  border: none; /* Mobile Safari */
+  opacity: 0;
+  position: absolute;
+  right: 100%;
+  bottom: 100%;
+}
+
+.toggle-all + label {
+  font-size: 0;
+  position: absolute;
+  transform: rotate(90deg);
+}
+
+.toggle-all + label:before {
+  content: '❯';
+  font-size: 22px;
+  color: #e6e6e6;
+  transition: color 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.toggle-all:hover + label:before {
+  color: #999999;
+}
+
+.toggle-all:checked + label:before {
+  color: #737373;
+}
+
+.new-todo{
+  padding: 16px 16px 16px 20px;
+}
+
+.upload-todo-img-label{
+  position: relative;
+  .upload-todo-img-logo{
+    padding: 16px;
+    fill: #e6e6e6;
+    transition: all 0.3s ease-in-out;
+  }
+  &:hover{
+    .upload-todo-img-logo{
+      fill: #999999;
+    }
+  }
+  &:active{
+    .upload-todo-img-logo{
+      fill: #737373;
+    }
+  }
+  .upload-todo-img-button{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+}

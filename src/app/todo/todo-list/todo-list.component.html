@@ -2,23 +2,31 @@
   <ng-container *ngIf="tdl.selected>=0">
     <header class="header">
       <h1 title="{{tdl.lists[tdl.selected].label}}">{{tdl.lists[tdl.selected].label}}</h1>
-      <form (submit)="create(name.value,file.files);name.value='';file.value=''">
+      <form (submit)="create(name.value,file.files);name.value='';file.value=''" class="form-todo">
+        <div *ngIf="thereIsItems(tdl)" class="check-box-container">
+          <input class="toggle-all"
+                 type="checkbox"
+                 name="toggleAll"
+                 id="toggleAll"
+                 (click)="toggleAll(tdl.lists[tdl.selected].items)"
+                 [checked]="isChecked(tdl.lists[tdl.selected].items)"
+          />
+          <label for="toggleAll">Mark all as complete</label>
+        </div>
         <input name="newTodoInput"
                class="new-todo"
                placeholder="Que faire?"
                autofocus #name/>
-        <input type="file" accept="image/png, image/jpeg" #file/>
+        <label class="upload-todo-img-label">
+          <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="30px" viewBox="0 0 24 24" width="30px" class="upload-todo-img-logo"><g><rect fill="none" height="24" width="24"/></g><g><g><path d="M14,2H6C4.9,2,4.01,2.9,4.01,4L4,20c0,1.1,0.89,2,1.99,2H18c1.1,0,2-0.9,2-2V8L14,2z M18,20H6V4h7v5h5V20z M8,15.01 l1.41,1.41L11,14.84V19h2v-4.16l1.59,1.59L16,15.01L12.01,11L8,15.01z"/></g></g></svg>
+          <input type="file"
+                 class="upload-todo-img-button"
+                 accept="image/png, image/jpeg"
+                 #file/>
+        </label>
       </form>
     </header>
     <section [class.main]="thereIsItems(tdl)">
-      <input *ngIf="thereIsItems(tdl)" class="toggle-all"
-             type="checkbox"
-             name="toggleAll"
-             id="toggleAll"
-             (click)="toggleAll(tdl.lists[tdl.selected].items)"
-             [checked]="isChecked(tdl.lists[tdl.selected].items)"
-      />
-      <label *ngIf="thereIsItems(tdl)" for="toggleAll">Mark all as complete</label>
       <ul class="todo-list">
         <li *ngFor="let item of preFilter(tdl.lists[tdl.selected].items); trackBy: trackById"
             [class.editing]="cItem.editing" [class.completed]="item.isDone">
