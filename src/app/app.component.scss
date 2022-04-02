@@ -1,11 +1,15 @@
 .app-container{
   display: flex;
   height: 100vh;
+  width: 100%;
+  overflow: hidden;
 }
 
 .right-section{
   margin: 0 auto;
-  width:70%
+  padding-bottom: 50px;
+  overflow-y: auto;
+  flex-grow: 1;
 }
 
 .left-section{
@@ -16,9 +20,11 @@
 @media screen and (max-width: 1200px) {
   .app-container{
     flex-wrap: wrap;
+    overflow-y: auto;
   }
   .right-section{
     width: 100%;
+    overflow-y: hidden;
   }
   .left-section{
     width: 100%;
