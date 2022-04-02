@@ -1,23 +1,23 @@
-<div class="view" (dblclick)="startEditing(newTextInput)">
-  <input class="toggle"
-         type="checkbox"
-         name="done"
-         [ngModel]="item.isDone"
-         (ngModelChange)="update.emit({isDone:!item.isDone})"
-  />
+<div class="view" [class.editing]="editing" [class.completed]="item.isDone">
   <img class="img-item" *ngIf="observable | async as url" src="{{url}}" alt="">
-  <label class="texte">
-    {{ item.label }}
-  </label>
-  <button class="destroy" (click)="delete.emit(this.item)"></button>
+  <div class="no-wrap-view">
+    <input class="toggle"
+           type="checkbox"
+           name="done"
+           [ngModel]="item.isDone"
+           (ngModelChange)="update.emit({isDone:!item.isDone})"
+    />
+    <label class="texte" (dblclick)="startEditing(newTextInput)">
+      {{ item.label }}
+    </label>
+    <button class="destroy" (click)="delete.emit(this.item)"></button>
+    <input #newTextInput
+           name="newTextInput"
+           class="edit"
+           [ngModel]="item.label"
+           (keyup.enter)="saveEdit(newTextInput.value)"
+           (blur)="saveEdit(newTextInput.value)"
+    />
+  </div>
 </div>
-<form>
-  <input #newTextInput
-         name="newTextInput"
-         class="edit"
-         [ngModel]="item.label"
-         (keyup.enter)="saveEdit(newTextInput.value)"
-         (blur)="saveEdit(newTextInput.value)"
-  />
-</form>
 

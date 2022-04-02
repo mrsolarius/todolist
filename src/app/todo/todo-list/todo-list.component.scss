@@ -44,7 +44,7 @@
 }
 
 .toggle-all:active + label:before {
-  color: #737373;
+  color: #4d4d4d;
 }
 
 .toggle-all:checked + label:before {
@@ -72,14 +72,14 @@
 
   &:active {
     .upload-todo-img-logo {
-      fill: #737373;
+      fill: #4d4d4d;
     }
   }
 
   &.selected {
     .upload-todo-img-logo {
       fill: #737373;
-      // I hesitate to choose between #737373 and #999999 when file is selected :thinking:
+      // I hesitate to choose between #737373 (gray) and #64DD17 (green) when file is selected :thinking:
       //fill: #64DD17;
     }
   }

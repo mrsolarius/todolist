@@ -29,12 +29,10 @@
     </header>
     <section [class.main]="thereIsItems(tdl)">
       <ul class="todo-list">
-        <li *ngFor="let item of preFilter(tdl.lists[tdl.selected].items); trackBy: trackById"
-            [class.editing]="cItem.editing" [class.completed]="item.isDone">
+        <li *ngFor="let item of preFilter(tdl.lists[tdl.selected].items); trackBy: trackById">
           <app-todo-item [item]="item"
                          (delete)="delete(item)"
                          (update)="update($event,item)"
-                         #cItem
           ></app-todo-item>
       </ul>
     </section>
