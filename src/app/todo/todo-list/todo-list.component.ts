@@ -89,4 +89,18 @@ export class TodoListComponent implements OnInit {
   thereIsItems(tdl: TodoListsData) {
     return tdl.selected>=0 && tdl.lists[tdl.selected].items !== undefined && tdl.lists[tdl.selected].items.length>0
   }
+
+  fileSelected(fileInput: HTMLInputElement, fileLabel: HTMLLabelElement){
+      if(fileInput.value){
+        fileLabel.classList.add('selected');
+      }else{
+        fileLabel.classList.remove('selected');
+      }
+  }
+
+  resetForm(fileInput: HTMLInputElement, fileLabel: HTMLLabelElement, input: HTMLInputElement){
+    fileInput.value = '';
+    input.value = '';
+    fileLabel.classList.remove('selected');
+  }
 }

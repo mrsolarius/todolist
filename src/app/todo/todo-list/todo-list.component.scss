@@ -1,4 +1,4 @@
-.form-todo{
+.form-todo {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -9,7 +9,7 @@
   margin: 0;
 }
 
-.check-box-container{
+.check-box-container {
   padding: 16px;
   align-items: center;
   display: flex;
@@ -40,35 +40,51 @@
 }
 
 .toggle-all:hover + label:before {
-  color: #999999;
+  color: #adadad;
+}
+
+.toggle-all:active + label:before {
+  color: #737373;
 }
 
 .toggle-all:checked + label:before {
   color: #737373;
 }
 
-.new-todo{
+.new-todo {
   padding: 16px 16px 16px 20px;
 }
 
-.upload-todo-img-label{
+.upload-todo-img-label {
   position: relative;
-  .upload-todo-img-logo{
+
+  .upload-todo-img-logo {
     padding: 16px;
     fill: #e6e6e6;
     transition: all 0.3s ease-in-out;
   }
-  &:hover{
-    .upload-todo-img-logo{
+
+  &:hover {
+    .upload-todo-img-logo {
       fill: #999999;
     }
   }
-  &:active{
-    .upload-todo-img-logo{
+
+  &:active {
+    .upload-todo-img-logo {
       fill: #737373;
     }
   }
-  .upload-todo-img-button{
+
+  &.selected {
+    .upload-todo-img-logo {
+      fill: #737373;
+      // I hesitate to choose between #737373 and #999999 when file is selected :thinking:
+      //fill: #64DD17;
+    }
+  }
+
+  .upload-todo-img-button {
     position: absolute;
     top: 0;
     left: 0;
