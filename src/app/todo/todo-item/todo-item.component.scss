@@ -44,7 +44,8 @@ label.texte {
     text-decoration: line-through;
   }
   .img-item{
-    opacity: 0.5;
+    opacity: 0.5!important;
+    max-height: 100px!important;
   }
 }
 
