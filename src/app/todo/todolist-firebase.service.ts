@@ -60,4 +60,10 @@ export class TodolistFirebaseService extends TodolistService{
       }
     });
   }
+
+  deletePhoto(photo: string): void {
+    if(this.userId && photo) {
+      this.storage.ref(this.databaseKey + this.userId + '/' + photo).delete();
+    }
+  }
 }

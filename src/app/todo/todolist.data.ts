@@ -6,7 +6,7 @@ import {Injector} from "@angular/core";
 export interface TodoItem {
   readonly label: string;
   readonly isDone: boolean;
-  readonly photo: string|undefined;
+  readonly photo: string|undefined; // the id of the photo
   readonly id: number;
 }
 
@@ -54,9 +54,26 @@ export abstract class TodolistService {
    */
   abstract publish(todolist: TodoListsData, withHistory: boolean): void;
 
+  /**
+   * Save the todolist photo where you want
+   * the function must return an identifier of the photo that is able to recover the url later using getPhotoUrl
+   * @param file the file to save
+   * @return Promise<string> the promise id of the item, could reject your error
+   */
   abstract savePhoto(file:File):Promise<string>;
 
-  abstract getPhotoUrl(photo:string):Promise<string>;
+  /**
+   * Remove the photo from your storage
+   * @param id the id of the photo to remove
+   */
+  abstract deletePhoto(id:string):void;
+
+  /**
+   * Get the url of the photo
+   * @param id the id of the photo
+   * @return Promise<string> the promise url of the photo, could reject your error
+   */
+  abstract getPhotoUrl(id:string):Promise<string>;
 
   /**
    * Add a new items to the todolist
@@ -113,6 +130,7 @@ export abstract class TodolistService {
     if (L.selected === -1) {
       return this;
     }
+    items.forEach(item => item.photo?this.deletePhoto(item.photo):null);
     const newValue: TodoListsData = {
       ...L,
       lists: [

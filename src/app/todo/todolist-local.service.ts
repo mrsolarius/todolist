@@ -64,4 +64,7 @@ export class TodolistLocalService extends TodolistService{
     });
   }
 
+  override deletePhoto(id: string): void {
+    localStorage.removeItem(id);
+  }
 }

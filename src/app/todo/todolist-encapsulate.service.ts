@@ -51,12 +51,21 @@ export class TodolistEncapsulateService extends TodolistService{
     }
   }
 
-  getPhotoUrl(photo: string): Promise<string> {
+  override getPhotoUrl(photo: string): Promise<string> {
     //if user is auth publish to todolistfirebase else publish to todolistlocal
     if(this.isAuth){
       return this.todolistFireBase.getPhotoUrl(photo);
     }else{
       return this.todolistLocal.getPhotoUrl(photo);
+    }
+  }
+
+  override deletePhoto(id: string): void {
+    //if user is auth publish to todolistfirebase else publish to todolistlocal
+    if(this.isAuth){
+      this.todolistFireBase.deletePhoto(id);
+    }else{
+      this.todolistLocal.deletePhoto(id);
     }
   }
 }
