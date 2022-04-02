@@ -10,6 +10,7 @@ export interface TodoItem {
   readonly id: number;
 }
 
+// Todolist with file instead of photo id
 export interface TodoItemFile{
   readonly label: string;
   readonly isDone: boolean;
@@ -81,6 +82,10 @@ export abstract class TodolistService {
    * @param todoItems the todoItems of the new item
    */
   async create(...todoItems: readonly Partial<TodoItemFile>[]): Promise<this> {
+    const L: TodoListsData = this.subj.value;
+    if (L.selected === -1) {
+      return this;
+    }
     const preprocessTodoItemsPromise : Promise<TodoItem>[] = todoItems
       .filter(todoItem => todoItem.label!=undefined && todoItem.label.trim().length > 0)
       .map(async (todoItem) => {
@@ -93,10 +98,6 @@ export abstract class TodolistService {
         }
     });
     const preprocessTodoItems = await Promise.all(preprocessTodoItemsPromise);
-    const L: TodoListsData = this.subj.value;
-    if (L.selected === -1) {
-      return this;
-    }
     const newValue: TodoListsData = {
       ...L,
       lists: [
@@ -217,7 +218,12 @@ export abstract class TodolistService {
     const selected = L.selected - 1 === -1 ? L.lists.length - 1 > 0 ? 0 : -1 : L.selected - 1;
     const newValue: TodoListsData = {
       ...L,
-      lists: L.lists.filter((_, i) => i !== index),
+      lists: L.lists.filter((_, i) => {
+        if(i === index) {
+          L.lists[index].items.forEach(item => item.photo?this.deletePhoto(item.photo):null);
+        }
+        return i !== index;
+      }),
       selected
     }
     this.history.resetHistory();
