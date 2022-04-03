@@ -14,7 +14,7 @@ export interface TodoItem {
 export interface TodoItemFile{
   readonly label: string;
   readonly isDone: boolean;
-  readonly photo: File;
+  readonly photo: File|string;
   readonly id: number;
 }
 
@@ -29,6 +29,16 @@ export interface TodoListsData {
   readonly selected: number;
   readonly lists: readonly TodoList[];
 }
+
+/*
+export interface PhotoFile{
+  readonly id: string
+  readonly url: string|undefined
+  readonly b64: string|undefined
+}
+
+export type PhotoFiles = readonly PhotoFile[];
+*/
 
 export const DEFAULT_LIST: TodoListsData = {account: "local", selected: -1, lists: []};
 
@@ -93,7 +103,7 @@ export abstract class TodolistService {
           ...todoItem,
           label: todoItem.label!.trim(),
           isDone: todoItem.isDone!==undefined ? todoItem.isDone : false,
-          photo: todoItem.photo!==undefined ? await this.savePhoto(todoItem.photo) : '',
+          photo: typeof todoItem.photo!=="string" ? await this.savePhoto(todoItem.photo!) : todoItem.photo,
           id: idItem++
         }
     });

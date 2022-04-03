@@ -1,5 +1,5 @@
 import {Injectable, Injector} from '@angular/core';
-import {DEFAULT_LIST, TodoListsData, TodolistService} from "./todolist.data";
+import {DEFAULT_LIST,  TodoListsData, TodolistService} from "./todolist.data";
 import {AngularFireDatabase} from "@angular/fire/compat/database";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
 import {v4 as uuid} from "uuid";
@@ -61,7 +61,7 @@ export class TodolistFirebaseService extends TodolistService{
     });
   }
 
-  deletePhoto(photo: string): void {
+  override deletePhoto(photo: string): void {
     if(this.userId && photo) {
       this.storage.ref(this.databaseKey + this.userId + '/' + photo).delete();
     }
