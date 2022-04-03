@@ -29,8 +29,8 @@
       </ul>
     </div>
   </section>
-  <section *ngIf="tdl.selected!==-1" class="button-section">
-    <button title="Exporter une liste" class="logo-button" (click)="exportList(tdl.lists[tdl.selected])">
+  <section class="button-section">
+    <button *ngIf="tdl.selected!==-1" title="Exporter une liste" class="logo-button" (click)="exportList(tdl.lists[tdl.selected])">
       <svg xmlns="http://www.w3.org/2000/svg" height="24px" width="24px" viewBox="0 0 24 24" fill="#000000">
         <path d="M0 0h24v24H0V0z" fill="none"/>
         <path d="M13 5v6h1.17L12 13.17 9.83 11H11V5h2m2-2H9v6H5l7 7 7-7h-4V3zm4 15H5v2h14v-2z"/>
