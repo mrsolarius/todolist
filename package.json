@@ -1,5 +1,5 @@
 {
-  "name": "l3m-tp-x-todolist-angular-y2022",
+  "name": "todolist-app",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
