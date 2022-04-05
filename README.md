@@ -3,7 +3,7 @@
 - *Louis Volat*
 
 # Lien de production
-- [todolist.tuturu.fr](https://todolist.tuturu.fr)
+- [todo.tuturu.fr](https://todo.tuturu.fr/)
 
 # Fontionalité
 - [x] Création/Edition/Suppression des tâches
