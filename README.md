@@ -1,28 +1,29 @@
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-f059dc9a6f8d3a56e377f745f24479a46679e63a5d9fe6f495e02850cd0d8118.svg)](https://classroom.github.com/online_ide?assignment_repo_id=6990179&assignment_repo_type=AssignmentRepo)
-# L3mTpXTodolistAngularY2022
+# Projet Todo List Angular/Firebase
+- *Amandine Bray*
+- *Louis Volat*
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.2.2.
+# Lien de production
+- [todolist.tuturu.fr](https://todolist.tuturu.fr)
 
-## Development server
+# Fontionalité
+- [x] Création/Edition/Suppression des tâches
+- [x] Cocher/Décocher une ou toutes les tâches
+- [x] Filtrage des tâches par status (tous/actifs/complétés)
+- [x] <kbd>Ctrl</kbd>+<kbd>Z</kbd> / <kbd>Ctrl</kbd>+<kbd>Y</kbd> pour les actions dans les todo-list
+- [ ] <kbd>Ctrl</kbd>+<kbd>Z</kbd> / <kbd>Ctrl</kbd>+<kbd>Y</kbd> sur les todolist (edition suppression selections)
+- [x] Attachement d'une image à une tâche
+- [x] Authentification
+- [x] Stockage local et Synchronisation des données avec Firebase si autentifié
+- [x] Création/Edition/Suppression des todolistes
+- [x] Selection des todolistes
+- [x] Importer/Importer les todolist (Image non supporter)
+- [ ] Importer/Exporter les image contenu dans les todolist
+- [ ] Partage des todolistes (QR Code/Lien d'invitation)
+- [ ] PWA (Progressive Web App)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+# Bug Connu
+- [ ] suppression des immage sur ctrl+z lorsque nécessaire (jammais supprimé actuellement)
+- [ ] importation de nimporte quelle json fonctionne mais crée une liste vide (erreur à renvoyer si json pas de la bonne structure)
+- [ ] exportation de todolist ne prend pas en charge les images
+- [ ] impossible d'upload des image ou d'ajouter des items si le localstorage dépasse les 5mb
