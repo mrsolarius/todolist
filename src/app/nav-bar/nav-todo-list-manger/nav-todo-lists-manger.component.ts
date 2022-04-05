@@ -92,7 +92,9 @@ export class NavTodoListsMangerComponent implements OnInit {
       reader.onload = () => {
         const todoListData = JSON.parse(reader.result as string);
         this.todoListsServices.createTodoList(todoListData.label);
-        this.todoListsServices.create(...todoListData.items);
+        setTimeout(() =>{
+          this.todoListsServices.create(...todoListData.items);
+        },100);
       };
     }
   }

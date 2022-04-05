@@ -34,7 +34,9 @@ export class TodolistFirebaseService extends TodolistService{
 
   override publish(todolist: TodoListsData, withHistory : boolean): void {
     if (this.userId) {
-      this.db.list(this.databaseKey).update(this.userId,todolist);
+      this.db.list(this.databaseKey).update(this.userId,todolist).catch(error => {
+        console.log(error);
+      });
       this.subj.next(todolist);
       if(withHistory){
         this.history.push(todolist);

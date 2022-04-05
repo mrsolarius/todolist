@@ -99,11 +99,19 @@ export abstract class TodolistService {
     const preprocessTodoItemsPromise : Promise<TodoItem>[] = todoItems
       .filter(todoItem => todoItem.label!=undefined && todoItem.label.trim().length > 0)
       .map(async (todoItem) => {
+        let photo = '';
+        if(todoItem.photo!==undefined){
+          if(typeof todoItem.photo!=='string'){
+            photo = await this.savePhoto(todoItem.photo);
+          }else{
+            photo = todoItem.photo;
+          }
+        }
         return {
           ...todoItem,
           label: todoItem.label!.trim(),
           isDone: todoItem.isDone!==undefined ? todoItem.isDone : false,
-          photo: typeof todoItem.photo!=="string" ? await this.savePhoto(todoItem.photo!) : todoItem.photo,
+          photo: photo,
           id: idItem++
         }
     });
@@ -229,7 +237,7 @@ export abstract class TodolistService {
     const newValue: TodoListsData = {
       ...L,
       lists: L.lists.filter((_, i) => {
-        if(i === index) {
+        if(i === index && L.lists[index].items !== undefined) {
           L.lists[index].items.forEach(item => item.photo?this.deletePhoto(item.photo):null);
         }
         return i !== index;
