@@ -53,49 +53,69 @@ export class NavTodoListsMangerComponent implements OnInit {
   }
 
   async exportList(todoList: TodoList) {
-    /*
-    Des test pour y stoker aussi les photos sans success :'(
+    // is there a need to move that code to the service?
     const photos: string[] = todoList.items.map(item => item.photo ? item.photo : '').filter(photo => photo !== '');
-    const photosUrlsPromise = photos.map((id) =>
-      this.todoListsServices.getPhotoUrl(id)
-        .then(url => {
+    const photosB64Promise = photos.map(async (id) => {
+      return this.todoListsServices.getPhotoBase64(id)
+        .then(base64 => {
           return {
             id,
-            url
+            base64
           };
-        }));
-    const photosUrls = await Promise.all(photosUrlsPromise);
-    const todoListData = {
+        })
+    })
+    const photosB64 = await Promise.all(photosB64Promise);
+    const todoListData: TodoList = {
       ...todoList,
       items: todoList.items.map(item => {
-        const photo = photosUrls.find(photo => photo.id === item.photo);
+        const photo = photosB64.find(photo => photo.id === item.photo);
         return {
           ...item,
-          photo: photo ? photo.url : '',
+          photo: photo ? photo.base64 : '',
         }
       })
-    };*/
-    const url = window.URL.createObjectURL(new Blob([JSON.stringify(todoList)], {type: 'application/json'}));
+    };
+    const url = window.URL.createObjectURL(new Blob([JSON.stringify(todoListData)], {type: 'application/json'}));
     const a = document.createElement('a');
     a.setAttribute('download', todoList.label + '.json');
-    a.setAttribute('href',url);
+    a.setAttribute('href', url);
     a.click()
     a.remove();
     window.URL.revokeObjectURL(url);
   }
 
   importList(files:FileList | null) {
+    // is there a need to move that code to the service?
     const file = files?.item(0);
     if (file) {
-      const reader = new FileReader();
-      reader.readAsText(file);
-      reader.onload = () => {
-        const todoListData = JSON.parse(reader.result as string);
-        this.todoListsServices.createTodoList(todoListData.label);
-        setTimeout(() =>{
-          this.todoListsServices.create(...todoListData.items);
-        },100);
-      };
+      try {
+        const reader = new FileReader();
+        reader.readAsText(file);
+        reader.onload = async () => {
+          const todoListData = JSON.parse(reader.result as string);
+          if(!todoListData.label || !todoListData.items) {
+            //not enough check here
+            return alert('Invalid file');
+          }
+          const mappedFilePromise = todoListData.items.map(async (item: { photo: string; }) => {
+            return {
+              ...item,
+              photo: item.photo ? await this.todoListsServices.getPhotoFile(item.photo) : ''
+            }
+          });
+          const mappedFile = await Promise.all(mappedFilePromise);
+          const todoListFileData = {
+            ...todoListData,
+            items: mappedFile
+          }
+          await this.todoListsServices.createTodoList(todoListFileData.label);
+          await this.todoListsServices.create(...todoListFileData.items);
+        };
+      }catch (e) {
+        alert('Error while reading file');
+      }
+    }else {
+      alert('No file selected');
     }
   }
 }
