@@ -158,3 +158,41 @@ section.button-section {
   }
 }
 
+
+
+.processing-box{
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  width: 50%;
+  height: 50%;
+  border-left: 3px solid transparent !important;
+  border-bottom: 3px solid transparent !important;
+  margin: 3px;
+}
+
+.processing {
+  &:before {
+    @extend .processing-box;
+    border: 3px dashed #fcc0bd;
+    animation: loading 2s linear infinite;
+  }
+  &:after {
+    @extend .processing-box;
+    border: 3px solid #d93025;
+    animation: loading 1s ease infinite;
+    z-index: 1
+  }
+
+}
+
+
+@keyframes loading {
+  0% {
+    transform: rotate(0deg)
+  }
+
+  100% {
+    transform: rotate(360deg)
+  }
+}

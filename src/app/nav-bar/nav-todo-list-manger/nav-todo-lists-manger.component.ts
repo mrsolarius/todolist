@@ -52,7 +52,8 @@ export class NavTodoListsMangerComponent implements OnInit {
     this.todoListsServices.updateTodoList(value[0], value[1]);
   }
 
-  async exportList(todoList: TodoList) {
+  async exportList(todoList: TodoList, element: HTMLButtonElement) {
+    element.classList.add("processing");
     // is there a need to move that code to the service?
     const photos: string[] = todoList.items.map(item => item.photo ? item.photo : '').filter(photo => photo !== '');
     const photosB64Promise = photos.map(async (id) => {
@@ -82,10 +83,12 @@ export class NavTodoListsMangerComponent implements OnInit {
     a.click()
     a.remove();
     window.URL.revokeObjectURL(url);
+    element.classList.remove("processing");
   }
 
-  importList(files:FileList | null) {
+  importList(files: FileList | null, element: HTMLLabelElement) {
     // is there a need to move that code to the service?
+    element.classList.add("processing");
     const file = files?.item(0);
     if (file) {
       try {
@@ -94,6 +97,7 @@ export class NavTodoListsMangerComponent implements OnInit {
         reader.onload = async () => {
           const todoListData = JSON.parse(reader.result as string);
           if(!todoListData.label || !todoListData.items) {
+            element.classList.remove("processing");
             //not enough check here
             return alert('Invalid file');
           }
@@ -110,12 +114,15 @@ export class NavTodoListsMangerComponent implements OnInit {
           }
           await this.todoListsServices.createTodoList(todoListFileData.label);
           await this.todoListsServices.create(...todoListFileData.items);
+          element.classList.remove("processing");
         };
       }catch (e) {
         alert('Error while reading file');
+        element.classList.remove("processing");
       }
     }else {
       alert('No file selected');
+      element.classList.remove("processing");
     }
   }
 }
