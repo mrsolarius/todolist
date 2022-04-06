@@ -4,6 +4,7 @@ import {AngularFireDatabase} from "@angular/fire/compat/database";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
 import {v4 as uuid} from "uuid";
 import {AngularFireStorage} from "@angular/fire/compat/storage";
+import {filetoDataURL} from "image-conversion";
 
 
 @Injectable({
@@ -32,11 +33,9 @@ export class TodolistFirebaseService extends TodolistService{
     });
   }
 
-  override publish(todolist: TodoListsData, withHistory : boolean): void {
+  override async publish(todolist: TodoListsData, withHistory : boolean): Promise<void> {
     if (this.userId) {
-      this.db.list(this.databaseKey).update(this.userId,todolist).catch(error => {
-        console.log(error);
-      });
+      await this.db.list(this.databaseKey).update(this.userId,todolist).catch(console.log);
       this.subj.next(todolist);
       if(withHistory){
         this.history.push(todolist);
@@ -67,5 +66,18 @@ export class TodolistFirebaseService extends TodolistService{
     if(this.userId && photo) {
       this.storage.ref(this.databaseKey + this.userId + '/' + photo).delete();
     }
+  }
+
+  override getPhotoBase64(id: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      if(this.userId && id) {
+        this.getPhotoUrl(id)
+          .then(url => fetch(url))
+          .then(response => response.blob())
+          .then(blob => filetoDataURL(blob))
+          .then(resolve)
+          .catch(reject);
+      }
+    });
   }
 }

@@ -19,7 +19,7 @@ export class TodolistLocalService extends TodolistService{
     }
   }
 
-  override publish(todolist: TodoListsData,saveHistory: boolean): void {
+  override async publish(todolist: TodoListsData,saveHistory: boolean): Promise<void> {
     // Save the list in local storage
     localStorage.setItem('todolist', JSON.stringify(todolist));
     this.subj.next(todolist);
@@ -66,5 +66,9 @@ export class TodolistLocalService extends TodolistService{
 
   override deletePhoto(id: string): void {
     localStorage.removeItem(id);
+  }
+
+  override getPhotoBase64(id: string): Promise<string> {
+    return Promise.resolve(this.getPhotoUrl(id));
   }
 }
