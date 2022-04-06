@@ -171,7 +171,7 @@ export abstract class TodolistService {
 
       ]
     }
-    this.publish(newValue, true);
+    await this.publish(newValue, true);
     return this;
   }
 
@@ -180,7 +180,7 @@ export abstract class TodolistService {
    * It will call the publish method with history set to true
    * @param items the items to remove
    */
-  delete(...items: readonly TodoItem[]): this {
+  async delete(...items: readonly TodoItem[]): Promise<this> {
     const L = this.subj.value;
     if (L.selected === -1) {
       return this;
@@ -200,7 +200,7 @@ export abstract class TodolistService {
         })
       ]
     }
-    this.publish(newValue, true);
+    await this.publish(newValue, true);
     return this;
   }
 
@@ -210,7 +210,7 @@ export abstract class TodolistService {
    * @param data the item to update
    * @param items the list of items to update
    */
-  update(data: Partial<TodoItem>, ...items: readonly TodoItem[]): this {
+  async update(data: Partial<TodoItem>, ...items: readonly TodoItem[]): Promise<this> {
     if (data.label !== "") {
       const L = this.subj.value;
       if (L.selected === -1) {
@@ -230,9 +230,9 @@ export abstract class TodolistService {
           })
         ]
       }
-      this.publish(newValue, true);
+      await this.publish(newValue, true);
     } else {
-      this.delete(...items);
+      await this.delete(...items);
     }
     return this;
   }
@@ -257,7 +257,7 @@ export abstract class TodolistService {
       ]
     }
     this.history.resetHistory();
-    this.publish(newValue, false);
+    await this.publish(newValue, false);
     return this;
   }
 
@@ -265,7 +265,7 @@ export abstract class TodolistService {
    * Delete a todolist
    * @param index the index of the todolist to delete
    */
-  deleteTodoList(index: number): this {
+  async deleteTodoList(index: number): Promise<this> {
     const L = this.subj.value;
     // if we delete the first element select the second one if exists
     // else if juste remove 1 to the selected index
@@ -281,7 +281,7 @@ export abstract class TodolistService {
       selected
     }
     this.history.resetHistory();
-    this.publish(newValue, true);
+    await this.publish(newValue, true);
     return this;
   }
 
@@ -290,7 +290,7 @@ export abstract class TodolistService {
    * @param index the index of the todolist to update
    * @param label the new label
    */
-  updateTodoList(index: number, label: string): this {
+  async updateTodoList(index: number, label: string): Promise<this> {
     const L = this.subj.value;
     const newValue: TodoListsData = {
       ...L,
@@ -307,7 +307,7 @@ export abstract class TodolistService {
       ]
     }
     this.history.resetHistory();
-    this.publish(newValue, true);
+    await this.publish(newValue, true);
     return this;
   }
 
@@ -315,7 +315,7 @@ export abstract class TodolistService {
    * Select a todolist by its index
    * @param index the index of the todolist
    */
-  selectTodoList(index: number): this {
+  async selectTodoList(index: number): Promise<this> {
     const L = this.subj.value;
     if (L.selected === index) {
       return this;
@@ -325,7 +325,7 @@ export abstract class TodolistService {
       selected: index
     }
     this.history.resetHistory();
-    this.publish(newValue, false);
+    await this.publish(newValue, false);
     return this;
   }
 
@@ -333,10 +333,10 @@ export abstract class TodolistService {
    * Undo the last change
    * It will call the publish method with history set too false to avoid infinite loop
    */
-  undo(): this {
+  async undo(): Promise<this> {
     const L = this.history.undo();
     if (L !== null) {
-      this.publish(L, false)
+      await this.publish(L, false)
     }
     return this;
   }
@@ -345,10 +345,10 @@ export abstract class TodolistService {
    * Redo the last change
    * It will call the publish method with history set too false to avoid infinite loop
    */
-  redo(): this {
+  async redo(): Promise<this> {
     const L = this.history.redo();
     if (L !== null) {
-      this.publish(L, false)
+      await this.publish(L, false)
     }
     return this;
   }
