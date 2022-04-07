@@ -94,3 +94,47 @@
     cursor: pointer;
   }
 }
+
+
+.image-place-holder-container{
+  position: relative;
+  width: 100%;
+  max-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #202124;
+  border-radius: 15px 15px 0 0;
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+
+  img.image-place-holder{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+  }
+  .image-place-holder-btn{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    svg{
+      fill: rgba(255, 255, 255, 0);
+      transition: all 0.3s ease-in-out;
+    }
+  }
+  &:hover{
+    .image-place-holder{
+      opacity: 0.5;
+    }
+    .image-place-holder-btn{
+      svg{
+        fill: rgba(255, 255, 255, 0.5);
+      }
+    }
+  }
+}

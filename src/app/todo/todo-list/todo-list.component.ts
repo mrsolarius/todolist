@@ -1,6 +1,7 @@
 import {Component, OnInit, ChangeDetectionStrategy, HostListener} from '@angular/core';
 import {TodoItem, TodoListsData} from "../todolist.data";
 import {TodolistEncapsulateService} from "../todolist-encapsulate.service";
+import {BehaviorSubject} from "rxjs";
 
 export enum FilterEnum{
   All,
@@ -21,6 +22,7 @@ export class TodoListComponent implements OnInit {
   filter : FilterEnum = FilterEnum.All
   statusEnum: typeof FilterEnum = FilterEnum;
   file : File | null = null;
+  private localUrl: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
   constructor(public todoService: TodolistEncapsulateService) { }
 
@@ -90,17 +92,48 @@ export class TodoListComponent implements OnInit {
     return tdl.selected>=0 && tdl.lists[tdl.selected].items !== undefined && tdl.lists[tdl.selected].items.length>0
   }
 
-  fileSelected(fileInput: HTMLInputElement, fileLabel: HTMLLabelElement){
-      if(fileInput.value){
-        fileLabel.classList.add('selected');
-      }else{
-        fileLabel.classList.remove('selected');
-      }
+  async fileSelected(fileInput: HTMLInputElement, fileLabel: HTMLLabelElement) {
+    if (fileInput.value) {
+      fileLabel.classList.add('selected');
+      this.localUrl.next(await this.filepath(fileInput.files));
+    } else {
+      fileLabel.classList.remove('selected');
+      this.localUrl.next('');
+    }
   }
 
   resetForm(fileInput: HTMLInputElement, fileLabel: HTMLLabelElement, input: HTMLInputElement){
-    fileInput.value = '';
     input.value = '';
+    this.resetFile(fileInput, fileLabel);
+  }
+
+  resetFile(fileInput: HTMLInputElement, fileLabel: HTMLLabelElement){
+    fileInput.value = '';
     fileLabel.classList.remove('selected');
+    this.fileSelected(fileInput, fileLabel);
+  }
+
+  filepath(files: FileList|null) : Promise<string>{
+    if (files !== null){
+      console.log();
+      return new Promise((resolve, reject) => {
+        const fileReader = new FileReader();
+        fileReader.onload = () => {
+          if(fileReader.result){
+            resolve(fileReader.result.toString());
+          }else {
+            reject('fileReader.result is null')
+          }
+        };
+        fileReader.onerror = reject;
+        fileReader.readAsDataURL(files[0]);
+      });
+    }else{
+      return new Promise((resolve)=>resolve(''));
+    }
+  }
+
+  get fileImgObs(){
+    return this.localUrl.asObservable();
   }
 }
