@@ -10,7 +10,7 @@
 - [x] Cocher/Décocher une ou toutes les tâches
 - [x] Filtrage des tâches par status (tous/actifs/complétés)
 - [x] <kbd>Ctrl</kbd>+<kbd>Z</kbd> / <kbd>Ctrl</kbd>+<kbd>Y</kbd> pour les actions dans les todo-list
-- [ ] <kbd>Ctrl</kbd>+<kbd>Z</kbd> / <kbd>Ctrl</kbd>+<kbd>Y</kbd> sur les todolist (edition suppression selections)
+- [X] <kbd>Ctrl</kbd>+<kbd>Z</kbd> / <kbd>Ctrl</kbd>+<kbd>Y</kbd> sur les todolist (edition suppression selections)
 - [x] Attachement d'une image à une tâche
 - [x] Authentification
 - [x] Stockage local et Synchronisation des données avec Firebase si autentifié

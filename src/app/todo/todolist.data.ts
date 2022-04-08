@@ -256,8 +256,8 @@ export abstract class TodolistService {
         }
       ]
     }
-    this.history.resetHistory();
-    await this.publish(newValue, false);
+    //this.history.resetHistory();
+    await this.publish(newValue, true);
     return this;
   }
 
@@ -280,7 +280,7 @@ export abstract class TodolistService {
       }),
       selected
     }
-    this.history.resetHistory();
+    //this.history.resetHistory();
     await this.publish(newValue, true);
     return this;
   }
@@ -306,7 +306,7 @@ export abstract class TodolistService {
         })
       ]
     }
-    this.history.resetHistory();
+    //this.history.resetHistory();
     await this.publish(newValue, true);
     return this;
   }
@@ -324,8 +324,8 @@ export abstract class TodolistService {
       ...L,
       selected: index
     }
-    this.history.resetHistory();
-    await this.publish(newValue, false);
+    //this.history.resetHistory();
+    await this.publish(newValue, true);
     return this;
   }
 

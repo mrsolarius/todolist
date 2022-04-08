@@ -31,7 +31,7 @@ export class HistoryService<T>{
       this.history.history.push(element);
       this.history.current = element;
       this.history.currentIndex = this.history.history.length - 1;
-      this.history.canUndo = true;
+      this.history.canUndo = this.history.currentIndex > 0  ;
       this.history.canRedo = false;
     }
   }
@@ -41,9 +41,7 @@ export class HistoryService<T>{
       this.history.currentIndex--;
       this.history.current = this.history.history[this.history.currentIndex];
       this.history.canRedo = true;
-      if (this.history.currentIndex === 0) {
-        this.history.canUndo = false;
-      }
+      this.history.canUndo = this.history.currentIndex > 0;
     }
     return this.history.current;
   }
@@ -52,7 +50,7 @@ export class HistoryService<T>{
     if (this.history.canRedo) {
       this.history.currentIndex++;
       this.history.current = this.history.history[this.history.currentIndex];
-      this.history.canUndo = true;
+      this.history.canUndo = this.history.currentIndex > 0;
       if (this.history.currentIndex === this.history.history.length - 1) {
         this.history.canRedo = false;
       }

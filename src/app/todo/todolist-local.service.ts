@@ -12,10 +12,11 @@ export class TodolistLocalService extends TodolistService{
     super(injector);
     // Retrieve the list from local storage
     const key = localStorage.getItem('todolist');
+    this.history.resetHistory();
     if (key) {
-      this.publish(JSON.parse(key),false);
+      this.publish(JSON.parse(key),true);
     }else {
-      this.publish(DEFAULT_LIST,false);
+      this.publish(DEFAULT_LIST,true);
     }
   }
 

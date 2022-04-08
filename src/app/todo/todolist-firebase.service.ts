@@ -19,6 +19,7 @@ export class TodolistFirebaseService extends TodolistService{
     //init upload task
     auth.authState.subscribe(user => {
       if(user){
+        this.history.resetHistory();
         this.userId = user.uid;
         this.db.database.ref(this.databaseKey+this.userId).on('value', (snapshot) => {
           console.log();
