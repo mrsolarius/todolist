@@ -13,9 +13,5 @@ import {TodolistEncapsulateService} from "./todo/todolist-encapsulate.service";
   ]
 })
 export class AppComponent {
-  title = 'TodoList Angular';
-  description: String = "Todo List de la L3 MIAGE yeay !!!";
-
-  constructor() {
-  }
+  constructor() {}
 }

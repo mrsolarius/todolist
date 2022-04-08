@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {TodoList} from "../../../todo/todolist.data";
 
 @Component({
@@ -6,7 +6,7 @@ import {TodoList} from "../../../todo/todolist.data";
   templateUrl: './nav-todo-list-item.component.html',
   styleUrls: ['../nav-todo-lists-manger.component.scss','./nav-todo-list-item.component.scss']
 })
-export class NavTodoListItemComponent implements OnInit {
+export class NavTodoListItemComponent {
 
   @Input() todoList!: TodoList;
   @Input() index!: number;
@@ -18,9 +18,6 @@ export class NavTodoListItemComponent implements OnInit {
   public editing: boolean = false;
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
 
   selectList(index: number) {
     this.selectTodoList.emit(index);

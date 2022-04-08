@@ -1,6 +1,5 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {TodolistEncapsulateService} from "../../todo/todolist-encapsulate.service";
-import {TodoList} from "../../todo/todolist.data";
 
 @Component({
   selector: 'app-nav-todo-list-manger',
@@ -8,13 +7,9 @@ import {TodoList} from "../../todo/todolist.data";
   styleUrls: ['./nav-todo-lists-manger.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NavTodoListsMangerComponent implements OnInit {
+export class NavTodoListsMangerComponent {
 
-  constructor(private todoListsServices: TodolistEncapsulateService) {
-  }
-
-  ngOnInit(): void {
-  }
+  constructor(private todoListsServices: TodolistEncapsulateService) {}
 
   get observer() {
     return this.todoListsServices.observable;
@@ -52,14 +47,14 @@ export class NavTodoListsMangerComponent implements OnInit {
     this.todoListsServices.updateTodoList(value[0], value[1]);
   }
 
-  async exportList(todoList: TodoList, element: HTMLButtonElement) {
+  async exportList(element: HTMLButtonElement) {
     element.classList.add("processing");
-    // is there a need to move that code to the service?
     try {
       const todoListData = await this.todoListsServices.export();
+      // tricks to generate download link in browser
       const url = window.URL.createObjectURL(new Blob([JSON.stringify(todoListData)], {type: 'application/json'}));
       const a = document.createElement('a');
-      a.setAttribute('download', todoList.label + '.json');
+      a.setAttribute('download', todoListData.label + '.json');
       a.setAttribute('href', url);
       a.click()
       a.remove();
