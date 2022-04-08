@@ -1,5 +1,5 @@
 <div class="view" [class.editing]="editing" [class.completed]="item.isDone">
-  <img class="img-item" *ngIf="observable | async as url" src="{{url}}" alt="">
+  <img class="img-item" *ngIf="observable | async as url" [src]="url" [class.selected]="selected" (click)="selected=!selected" [alt]="item.label">
   <div class="no-wrap-view">
     <input class="toggle"
            type="checkbox"

@@ -15,6 +15,7 @@ export class TodoItemComponent implements OnInit {
   @Output() update = new EventEmitter<Partial<TodoItem>>();
   public editing = false;
   public observable: Observable<string | undefined> | undefined;
+  public selected: boolean = false;
 
   constructor(public imp: TodolistEncapsulateService) {
   }

@@ -44,8 +44,9 @@ label.texte {
     text-decoration: line-through;
   }
   .img-item{
-    opacity: 0.5!important;
+    opacity: 0.3!important;
     max-height: 100px!important;
+    cursor: default;
   }
 }
 
@@ -79,8 +80,14 @@ label.texte {
   width: 100%;
   max-height: 100px;
   object-fit: cover;
-  transition: all 0.4s ease-in-out;
+  transition: opacity 0.4s ease-in-out, max-height 0.6s ease-in-out;
   opacity: 0.75;
+  cursor: zoom-in;
+  &.selected{
+    opacity: 1;
+    cursor: zoom-out;
+    max-height: 400px !important;
+  }
 }
 
 
@@ -91,7 +98,6 @@ label.texte {
   }
   .img-item{
     opacity: 1;
-    max-height: 250px;
   }
 }
 
