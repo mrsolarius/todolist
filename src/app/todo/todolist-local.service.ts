@@ -1,7 +1,7 @@
 import {Injectable, Injector} from '@angular/core';
 import {DEFAULT_LIST, TodoListsData, TodolistService} from "./todolist.data";
-import { v4 as uuid } from 'uuid';
-import {compress, filetoDataURL} from 'image-conversion';
+import {v4 as uuid} from 'uuid';
+import {compress, EImageType, filetoDataURL} from 'image-conversion';
 
 @Injectable({
   providedIn: 'root'
@@ -12,11 +12,12 @@ export class TodolistLocalService extends TodolistService{
     super(injector);
     // Retrieve the list from local storage
     const key = localStorage.getItem('todolist');
+    // reset history because we can come from another account
     this.history.resetHistory();
     if (key) {
-      this.publish(JSON.parse(key),true);
+      this.publish(JSON.parse(key),false);
     }else {
-      this.publish(DEFAULT_LIST,true);
+      this.publish(DEFAULT_LIST,false);
     }
   }
 
@@ -38,6 +39,7 @@ export class TodolistLocalService extends TodolistService{
       compress(file, {
         quality:0.8,
         height:800,
+        type: EImageType.PNG
       }).then(blob =>{
         // Convert the compressed image to a base64 string
         filetoDataURL(blob).then(bs64 =>{
@@ -55,7 +57,8 @@ export class TodolistLocalService extends TodolistService{
   }
 
   override getPhotoUrl(id: string): Promise<string> {
-    return new Promise((resolve, reject) =>    {
+    return new Promise((resolve, reject) => {
+      // Retrieve the image from the local storage
       const bs64 = localStorage.getItem(id);
       if (bs64) {
         resolve(bs64);

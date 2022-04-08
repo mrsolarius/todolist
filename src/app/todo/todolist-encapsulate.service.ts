@@ -14,7 +14,6 @@ export class TodolistEncapsulateService extends TodolistService{
 
   constructor(private todolistFireBase:TodolistFirebaseService,private todolistLocal:TodolistLocalService,private auth:AngularFireAuth,injector:Injector) {
     super(injector);
-
     //Auth subscribe and derivation to get useruid and call todolistfirebase if user is auth and todolistlocal if not
     auth.authState.pipe(switchMap(user=>{
       //When user change history need to be unrelated

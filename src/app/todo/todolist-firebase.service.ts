@@ -18,11 +18,13 @@ export class TodolistFirebaseService extends TodolistService{
     super(injector);
     //init upload task
     auth.authState.subscribe(user => {
+      // if a user is logged in
       if(user){
+        // we reset the history
         this.history.resetHistory();
         this.userId = user.uid;
+        // we get the realtime database data and update with it
         this.db.database.ref(this.databaseKey+this.userId).on('value', (snapshot) => {
-          console.log();
           return this.publish(snapshot.val()?snapshot.val():{
             ...DEFAULT_LIST,
             account: this.userId
@@ -36,7 +38,8 @@ export class TodolistFirebaseService extends TodolistService{
 
   override async publish(todolist: TodoListsData, withHistory : boolean): Promise<void> {
     if (this.userId) {
-      await this.db.list(this.databaseKey).update(this.userId,todolist).catch(console.log);
+      // retrieve the data list to update it with the new data
+      await this.db.list(this.databaseKey).update(this.userId,todolist).catch(console.error);
       this.subj.next(todolist);
       if(withHistory){
         this.history.push(todolist);
@@ -48,6 +51,7 @@ export class TodolistFirebaseService extends TodolistService{
     return new Promise((resolve, reject) => {
       if(this.userId) {
         const id = uuid();
+        // upload the file to firebase storage with the id as the name
         this.storage.upload(this.databaseKey + this.userId + '/' + id, file).then(() => {
             resolve(id);
         }).catch(reject);
@@ -58,6 +62,7 @@ export class TodolistFirebaseService extends TodolistService{
   override getPhotoUrl(photo: string): Promise<string> {
     return new Promise((resolve, reject) => {
       if(this.userId && photo) {
+        // get the url of the file from firebase storage with the id as the name
         this.storage.ref(this.databaseKey + this.userId + '/' + photo).getDownloadURL().toPromise().then(resolve).catch(reject);
       }
     });
@@ -65,11 +70,13 @@ export class TodolistFirebaseService extends TodolistService{
 
   override deletePhoto(photo: string): void {
     if(this.userId && photo) {
+      // delete the file from firebase storage with the id as the name
       this.storage.ref(this.databaseKey + this.userId + '/' + photo).delete();
     }
   }
 
   override getPhotoBase64(id: string): Promise<string> {
+    // this methode can't work if you don't authorize the cors policy
     return new Promise((resolve, reject) => {
       if(this.userId && id) {
         this.getPhotoUrl(id)
