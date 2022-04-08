@@ -46,3 +46,7 @@ Pour évité les erreurs CORS (Cross-Origin Resource Sharing) veuillez suivre le
 ```
 - exécuter la commande suivante : `gsutil cors set nom-de-votre-json.json gs://adresse-de-votre-bucket-firesbase`
 - si tous, c'est bien passé les request de toutes origines en get sur votre bucket firebase sont autorisées
+
+# Tuto en image
+![](./doc/tuto.png)
+Vous pouvez aussi utiliser <kbd>Ctrl</kbd>+<kbd>Z</kbd> / <kbd>Ctrl</kbd>+<kbd>Y</kbd> pour les actions annulées/réalisées vos actions dans la todolist.
