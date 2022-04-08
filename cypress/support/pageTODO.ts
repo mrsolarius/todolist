@@ -56,6 +56,13 @@ class PageTODOClass implements PageTODO{
     cy.get('.todo-list li').should('have.length', nb);
     return this;
   }
+
+  createTodoList(testTodo: string) {
+    cy.get('.create-todo-box').click()
+    cy.get('.create-todo-txt').type(testTodo)
+    cy.get('.create-todo-txt').type('{enter}')
+    return this;
+  }
 }
 
 export const pageTODO: PageTODOClass = new PageTODOClass();

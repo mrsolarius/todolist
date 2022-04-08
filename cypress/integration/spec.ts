@@ -4,12 +4,12 @@ describe('Tes Todo List', () => {
   it('Check Page At The Begin', () => {
     pageTODO.visit()
       .itemNotExist('.footer')
-      .checkValue('.new-todo', '')
   })
 
   it('Add Todo', () => {
     pageTODO
       .visit()
+      .createTodoList('Test Todo')
       .addTodo('abc')
       .checkNbTodo(1)
       .todoExist('abc')
