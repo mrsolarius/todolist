@@ -1,8 +1,9 @@
 .login-button-container {
-  margin-left: auto;
+  margin-left: auto !important;
 }
 
 .material-nav-button {
+  white-space: nowrap;
   border-radius: 10px;
   padding: 10px;
   display: flex;
@@ -69,6 +70,7 @@
   margin: 0 12px;
 
   h1 {
+    white-space: nowrap;
     font-size: 15px;
     font-weight: bold;
     color: #333;
@@ -76,6 +78,7 @@
   }
 
   h2 {
+    white-space: nowrap;
     font-size: 12px;
     font-weight: normal;
     color: #333;
