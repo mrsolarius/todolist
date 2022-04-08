@@ -55,72 +55,36 @@ export class NavTodoListsMangerComponent implements OnInit {
   async exportList(todoList: TodoList, element: HTMLButtonElement) {
     element.classList.add("processing");
     // is there a need to move that code to the service?
-    const photos: string[] = todoList.items.map(item => item.photo ? item.photo : '').filter(photo => photo !== '');
-    const photosB64Promise = photos.map(async (id) => {
-      return this.todoListsServices.getPhotoBase64(id)
-        .then(base64 => {
-          return {
-            id,
-            base64
-          };
-        })
-    })
-    const photosB64 = await Promise.all(photosB64Promise);
-    const todoListData: TodoList = {
-      ...todoList,
-      items: todoList.items.map(item => {
-        const photo = photosB64.find(photo => photo.id === item.photo);
-        return {
-          ...item,
-          photo: photo ? photo.base64 : '',
-        }
-      })
-    };
-    const url = window.URL.createObjectURL(new Blob([JSON.stringify(todoListData)], {type: 'application/json'}));
-    const a = document.createElement('a');
-    a.setAttribute('download', todoList.label + '.json');
-    a.setAttribute('href', url);
-    a.click()
-    a.remove();
-    window.URL.revokeObjectURL(url);
-    element.classList.remove("processing");
+    try {
+      const todoListData = await this.todoListsServices.export();
+      const url = window.URL.createObjectURL(new Blob([JSON.stringify(todoListData)], {type: 'application/json'}));
+      const a = document.createElement('a');
+      a.setAttribute('download', todoList.label + '.json');
+      a.setAttribute('href', url);
+      a.click()
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    }
+    catch (error) {
+      alert(error);
+    } finally {
+      element.classList.remove("processing");
+    }
   }
 
-  importList(files: FileList | null, element: HTMLLabelElement) {
+  async importList(files: FileList | null, element: HTMLLabelElement) {
     // is there a need to move that code to the service?
     element.classList.add("processing");
     const file = files?.item(0);
     if (file) {
       try {
-        const reader = new FileReader();
-        reader.readAsText(file);
-        reader.onload = async () => {
-          const todoListData = JSON.parse(reader.result as string);
-          if(!todoListData.label || !todoListData.items) {
-            element.classList.remove("processing");
-            //not enough check here
-            return alert('Invalid file');
-          }
-          const mappedFilePromise = todoListData.items.map(async (item: { photo: string; }) => {
-            return {
-              ...item,
-              photo: item.photo ? await this.todoListsServices.getPhotoFile(item.photo) : ''
-            }
-          });
-          const mappedFile = await Promise.all(mappedFilePromise);
-          const todoListFileData = {
-            ...todoListData,
-            items: mappedFile
-          }
-          await this.todoListsServices.createTodoList(todoListFileData.label);
-          await this.todoListsServices.create(...todoListFileData.items);
-          element.classList.remove("processing");
-        };
-      }catch (e) {
-        alert('Error while reading file');
+        await this.todoListsServices.importFromFile(file);
+      } catch (e) {
+        alert(e);
+      } finally {
         element.classList.remove("processing");
       }
-    }else {
+    } else {
       alert('No file selected');
       element.classList.remove("processing");
     }
